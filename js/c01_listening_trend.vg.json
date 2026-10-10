@@ -1,0 +1,88 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 800,
+  "height": 450,
+
+  "title": {
+    "text": "How Has Radio Listening Changed in Australia?",
+    "subtitle": "Weekly listening, Australians aged 10+, 2017–2026"
+  },
+
+  "data": {
+    "url": "data/c01_listening_trends.csv"
+  },
+
+  "encoding": {
+    "x": {
+      "field": "year",
+      "type": "ordinal",
+      "title": "Year",
+      "axis": {"labelAngle": 0}
+    },
+    "y": {
+      "field": "percentage",
+      "type": "quantitative",
+      "title": "Listened in the past week (%)",
+      "scale": {"domain": [40, 90]},
+      "axis": {"tickCount": 6}
+    }
+  },
+
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "point": {"filled": true, "size": 60},
+        "strokeWidth": 3
+      },
+      "encoding": {
+        "color": {
+          "field": "audio_type",
+          "type": "nominal",
+          "title": "Audio type",
+          "scale": {
+            "domain": ["Total radio", "Streaming audio"],
+            "range": ["#3B82C4", "#8657B5"]
+          }
+        },
+        "tooltip": [
+          {"field": "year", "type": "ordinal", "title": "Year"},
+          {"field": "audio_type", "type": "nominal", "title": "Audio type"},
+          {
+            "field": "percentage",
+            "type": "quantitative",
+            "title": "Weekly listening (%)",
+            "format": ".0f"
+          }
+        ]
+      }
+    },
+
+    {
+      "data": {
+        "values": [
+          {
+            "year": 2025,
+            "percentage": 87,
+            "label": "2025: streaming audio overtook radio"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "bottom",
+        "dx": -8,
+        "dy": -6,
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "color": "#334155"
+      },
+      "encoding": {
+        "x": {"field": "year", "type": "ordinal"},
+        "y": {"field": "percentage", "type": "quantitative"},
+        "text": {"field": "label", "type": "nominal"}
+      }
+    }
+  ]
+}
