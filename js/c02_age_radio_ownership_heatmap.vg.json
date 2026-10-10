@@ -1,0 +1,113 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 760,
+  "height": 260,
+
+  "title": {
+    "text": "Home Radio Ownership Rose Among Adults Aged 18–44",
+    "subtitle": "Radio and digital radio ownership at home, 2024–2025 (ACMA)"
+  },
+
+  "data": {
+    "url": "data/acma_listening_2026.csv",
+    "format": {
+      "type": "csv",
+      "parse": {"year": "number", "value": "number"}
+    }
+  },
+
+  "transform": [
+    {"filter": "datum.dataset_section == 'Radio ownership'"},
+    {"filter": "datum.subgroup_type == 'Age group'"},
+    {"filter": "datum.year == 2024 || datum.year == 2025"},
+    {
+      "filter": "datum.metric == 'Radio ownership at home' || datum.metric == 'Digital radio ownership at home'"
+    },
+    {
+      "filter": "datum.subgroup == '18–24' || datum.subgroup == '25–34' || datum.subgroup == '35–44'"
+    },
+    {
+      "calculate": "datum.metric == 'Radio ownership at home' ? 'Radio' : 'Digital radio'",
+      "as": "radio_type"
+    },
+    {
+      "calculate": "datum.radio_type + ' ' + datum.year",
+      "as": "category"
+    },
+    {"calculate": "datum.value + '%'", "as": "label"}
+  ],
+
+  "encoding": {
+    "x": {
+      "field": "category",
+      "type": "ordinal",
+      "title": null,
+      "sort": ["Radio 2024", "Radio 2025", "Digital radio 2024", "Digital radio 2025"],
+      "axis": {"labelAngle": 0, "labelFontSize": 11}
+    },
+    "y": {
+      "field": "subgroup",
+      "type": "ordinal",
+      "title": "Age group",
+      "sort": ["18–24", "25–34", "35–44"],
+      "axis": {"labelFontSize": 12}
+    }
+  },
+
+  "layer": [
+    {
+      "mark": {
+        "type": "rect",
+        "stroke": "white",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "color": {
+          "field": "value",
+          "type": "quantitative",
+          "title": "Ownership (%)",
+          "scale": {"domain": [0, 40], "scheme": "blues"}
+        },
+        "tooltip": [
+          {"field": "subgroup", "type": "nominal", "title": "Age group"},
+          {"field": "radio_type", "type": "nominal", "title": "Type"},
+          {"field": "year", "type": "quantitative", "title": "Year", "format": "d"},
+          {"field": "value", "type": "quantitative", "title": "Ownership (%)", "format": ".0f"}
+        ]
+      }
+    },
+
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 17,
+        "fontWeight": "bold"
+      },
+      "encoding": {
+        "text": {"field": "label", "type": "nominal"},
+        "color": {
+          "condition": {"test": "datum.value >= 28", "value": "white"},
+          "value": "#1F2937"
+        }
+      }
+    },
+
+    {
+      "transform": [
+        {
+          "filter": "datum.subgroup == '18–24' && datum.year == 2025 && datum.metric == 'Radio ownership at home'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "dy": 25,
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "color": "#172554"
+      },
+      "encoding": {
+        "text": {"value": "+13 pp vs 2024"}
+      }
+    }
+  ]
+}

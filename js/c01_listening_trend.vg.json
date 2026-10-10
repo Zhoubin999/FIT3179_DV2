@@ -4,26 +4,47 @@
   "height": 450,
 
   "title": {
-    "text": "How Has Radio Listening Changed in Australia?",
-    "subtitle": "Weekly listening, Australians aged 10+, 2017–2026"
+    "text": "How Has Audio Listening Changed in Australia?",
+    "subtitle": "Weekly reach among Australians aged 10+, 2017–2026"
   },
 
   "data": {
-    "url": "data/c01_listening_trends.csv"
+    "url": "data/infinite_dial_national_2026.csv",
+    "format": {
+      "type": "csv",
+      "parse": {"year": "number", "value": "number"}
+    }
   },
+
+  "transform": [
+    {"filter": "datum.subgroup_type == 'Overall'"},
+    {"filter": "datum.subgroup == 'All population 10+'"},
+    {
+      "filter": "datum.metric == 'Total radio weekly reach' || datum.metric == 'Weekly streaming audio listening'"
+    },
+    {
+      "calculate": "datum.metric == 'Total radio weekly reach' ? 'Total radio' : 'Streaming audio'",
+      "as": "audio_type"
+    }
+  ],
 
   "encoding": {
     "x": {
       "field": "year",
-      "type": "ordinal",
+      "type": "quantitative",
       "title": "Year",
-      "axis": {"labelAngle": 0}
+      "scale": {"domain": [2017, 2026]},
+      "axis": {
+        "format": "d",
+        "values": [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "labelAngle": 0
+      }
     },
     "y": {
-      "field": "percentage",
+      "field": "value",
       "type": "quantitative",
-      "title": "Listened in the past week (%)",
-      "scale": {"domain": [40, 90]},
+      "title": "Weekly listening reach (%)",
+      "scale": {"domain": [0, 100]},
       "axis": {"tickCount": 6}
     }
   },
@@ -42,46 +63,47 @@
           "title": "Audio type",
           "scale": {
             "domain": ["Total radio", "Streaming audio"],
-            "range": ["#3B82C4", "#8657B5"]
+            "range": ["#2563EB", "#E76F51"]
           }
         },
         "tooltip": [
-          {"field": "year", "type": "ordinal", "title": "Year"},
+          {"field": "year", "type": "quantitative", "title": "Year", "format": "d"},
           {"field": "audio_type", "type": "nominal", "title": "Audio type"},
-          {
-            "field": "percentage",
-            "type": "quantitative",
-            "title": "Weekly listening (%)",
-            "format": ".0f"
-          }
+          {"field": "value", "type": "quantitative", "title": "Weekly reach (%)", "format": ".0f"}
         ]
       }
     },
 
     {
-      "data": {
-        "values": [
-          {
-            "year": 2025,
-            "percentage": 87,
-            "label": "2025: streaming audio overtook radio"
-          }
-        ]
-      },
+      "transform": [
+        {"filter": "datum.year == 2025 && datum.audio_type == 'Streaming audio'"}
+      ],
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 180,
+        "color": "#E76F51",
+        "stroke": "white",
+        "strokeWidth": 2
+      }
+    },
+
+    {
+      "transform": [
+        {"filter": "datum.year == 2025 && datum.audio_type == 'Streaming audio'"}
+      ],
       "mark": {
         "type": "text",
         "align": "right",
         "baseline": "bottom",
-        "dx": -8,
-        "dy": -6,
+        "dx": -10,
+        "dy": -12,
         "fontSize": 12,
         "fontWeight": "bold",
         "color": "#334155"
       },
       "encoding": {
-        "x": {"field": "year", "type": "ordinal"},
-        "y": {"field": "percentage", "type": "quantitative"},
-        "text": {"field": "label", "type": "nominal"}
+        "text": {"value": "2025: Streaming reaches 79%, radio 78%"}
       }
     }
   ]
