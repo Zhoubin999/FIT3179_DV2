@@ -66,11 +66,19 @@
           "field": "value",
           "type": "quantitative",
           "title": "Ownership (%)",
-          "scale": {"domain": [0, 40], "scheme": "blues"}
+          "scale": {
+            "domain": [0, 40],
+            "range": ["#E7F1FF", "#1556A8"]
+          },
+          "legend": {
+            "orient": "bottom",
+            "direction": "horizontal",
+            "gradientLength": 220
+          }
         },
         "tooltip": [
           {"field": "subgroup", "type": "nominal", "title": "Age group"},
-          {"field": "radio_type", "type": "nominal", "title": "Type"},
+          {"field": "radio_type", "type": "nominal", "title": "Radio type"},
           {"field": "year", "type": "quantitative", "title": "Year", "format": "d"},
           {"field": "value", "type": "quantitative", "title": "Ownership (%)", "format": ".0f"}
         ]
@@ -86,8 +94,11 @@
       "encoding": {
         "text": {"field": "label", "type": "nominal"},
         "color": {
-          "condition": {"test": "datum.value >= 28", "value": "white"},
-          "value": "#1F2937"
+          "condition": {
+            "test": "datum.value >= 30",
+            "value": "white"
+          },
+          "value": "#0F172A"
         }
       }
     },
@@ -103,7 +114,7 @@
         "dy": 25,
         "fontSize": 11,
         "fontWeight": "bold",
-        "color": "#172554"
+        "color": "#0F172A"
       },
       "encoding": {
         "text": {"value": "+13 pp vs 2024"}
