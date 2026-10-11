@@ -1,0 +1,126 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 800,
+  "height": 420,
+
+  "title": {
+    "text": "How Has In-car Digital Connectivity Changed in Australia?",
+    "subtitle": "Apple CarPlay or Android Auto ownership among adults aged 18+ who travelled in a car, 2019–2026"
+  },
+
+  "data": {
+    "url": "data/australian_radio_combined_long.csv",
+    "format": {
+      "type": "csv",
+      "parse": {"year": "number", "value": "number"}
+    }
+  },
+
+  "transform": [
+    {"filter": "datum.dataset_section == 'In-car audio'"},
+    {"filter": "datum.metric == 'Apple CarPlay or Android Auto ownership'"},
+    {"filter": "datum.subgroup_type == 'Overall'"},
+    {
+      "filter": "datum.geography == 'Australia' || datum.geography == 'Regional Australia'"
+    },
+    {
+      "calculate": "datum.geography == 'Australia' ? 'Australia overall' : 'Regional Australia'",
+      "as": "area"
+    },
+    {"calculate": "format(datum.value, '.0f') + '%'", "as": "value_label"}
+  ],
+
+  "encoding": {
+    "x": {
+      "field": "year",
+      "type": "ordinal",
+      "title": "Year",
+      "sort": "ascending",
+      "axis": {"labelAngle": 0, "labelFontSize": 12}
+    },
+    "y": {
+      "field": "value",
+      "type": "quantitative",
+      "title": "CarPlay / Android Auto ownership (%)",
+      "scale": {"domain": [0, 70]},
+      "axis": {"tickCount": 8}
+    }
+  },
+
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "cornerRadiusTopLeft": 3,
+        "cornerRadiusTopRight": 3
+      },
+      "encoding": {
+        "xOffset": {
+          "field": "area",
+          "type": "nominal",
+          "sort": ["Australia overall", "Regional Australia"]
+        },
+        "color": {
+          "field": "area",
+          "type": "nominal",
+          "title": "Area",
+          "scale": {
+            "domain": ["Australia overall", "Regional Australia"],
+            "range": ["#64748B", "#0F766E"]
+          },
+          "legend": {"orient": "bottom", "direction": "horizontal"}
+        },
+        "tooltip": [
+          {"field": "year", "type": "ordinal", "title": "Year"},
+          {"field": "area", "type": "nominal", "title": "Area"},
+          {
+            "field": "value",
+            "type": "quantitative",
+            "title": "Ownership (%)",
+            "format": ".0f"
+          }
+        ]
+      }
+    },
+
+    {
+      "transform": [
+        {"filter": "datum.year == 2026"}
+      ],
+      "mark": {
+        "type": "text",
+        "dy": -12,
+        "fontSize": 13,
+        "fontWeight": "bold",
+        "color": "#1F2937"
+      },
+      "encoding": {
+        "xOffset": {
+          "field": "area",
+          "type": "nominal",
+          "sort": ["Australia overall", "Regional Australia"]
+        },
+        "text": {"field": "value_label", "type": "nominal"}
+      }
+    },
+
+    {
+      "transform": [
+        {"filter": "datum.year == 2026 && datum.geography == 'Regional Australia'"}
+      ],
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "dx": 35,
+        "dy": -3,
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "color": "#334155"
+      },
+      "encoding": {
+        "y": {"datum": 64, "type": "quantitative"},
+        "text": {"value": "2026 gap: 12 percentage points"}
+      }
+    }
+  ]
+}
