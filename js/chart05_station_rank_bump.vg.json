@@ -82,8 +82,12 @@
           "title": "Station",
           "scale": {
             "range": [
-              "#8D4474", "#C47C2B", "#7649A3",
-              "#A95642", "#647146", "#A95F8B"
+              "#4E79A7",
+              "#F28E2B",
+              "#E15759",
+              "#76B7B2",
+              "#59A14F",
+              "#EDC948"
             ]
           },
           "legend": {"orient": "bottom", "columns": 3}
@@ -119,7 +123,7 @@
         "dy": -19,
         "fontSize": 12,
         "fontWeight": "bold",
-        "color": "#4A2A63"
+        "color": "#374151"
       },
       "encoding": {
         "text": {"field": "rise_note", "type": "nominal"}
