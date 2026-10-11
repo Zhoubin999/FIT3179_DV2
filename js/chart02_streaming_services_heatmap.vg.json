@@ -1,0 +1,132 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 640,
+  "height": 248,
+  "title": {
+    "text": "Not all streaming services grew equally",
+    "subtitle": "Weekly use among Australians aged 10+, 2024–2026"
+  },
+  "data": {
+    "url": "data/infinite_dial_national_2026.csv",
+    "format": {
+      "type": "csv",
+      "parse": {
+        "year": "number",
+        "value": "number"
+      }
+    }
+  },
+  "transform": [
+    {
+      "filter": "datum.metric == 'Weekly online audio service usage'"
+    },
+    {
+      "calculate": "format(datum.value,'.0f')+'%'",
+      "as": "pct_label"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "rect",
+        "cornerRadius": 4
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal",
+          "title": "Year",
+          "sort": [
+            2024,
+            2025,
+            2026
+          ],
+          "axis": {
+            "labelAngle": 0
+          }
+        },
+        "y": {
+          "field": "subgroup",
+          "type": "nominal",
+          "title": null,
+          "sort": [
+            "Spotify",
+            "YouTube Music",
+            "Apple Music",
+            "Amazon Music",
+            "SoundCloud"
+          ]
+        },
+        "color": {
+          "field": "value",
+          "type": "quantitative",
+          "title": "Weekly use (%)",
+          "scale": {
+            "domain": [
+              0,
+              50
+            ],
+            "range": [
+              "#E9F6F1",
+              "#087F79"
+            ]
+          }
+        },
+        "tooltip": [
+          {
+            "field": "subgroup",
+            "title": "Service"
+          },
+          {
+            "field": "year",
+            "title": "Year"
+          },
+          {
+            "field": "value",
+            "title": "Weekly use (%)",
+            "format": ".0f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 13,
+        "fontWeight": 600
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal",
+          "sort": [
+            2024,
+            2025,
+            2026
+          ]
+        },
+        "y": {
+          "field": "subgroup",
+          "type": "nominal",
+          "sort": [
+            "Spotify",
+            "YouTube Music",
+            "Apple Music",
+            "Amazon Music",
+            "SoundCloud"
+          ]
+        },
+        "text": {
+          "field": "pct_label"
+        },
+        "color": {
+          "condition": {
+            "test": "datum.value >= 25",
+            "value": "#FFFFFF"
+          },
+          "value": "#26384B"
+        }
+      }
+    }
+  ]
+}
