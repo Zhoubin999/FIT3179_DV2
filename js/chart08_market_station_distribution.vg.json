@@ -1,0 +1,138 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 900,
+  "height": 340,
+  "title": {
+    "text": "Local markets have different competitive profiles",
+    "subtitle": "All station shares remain visible; choose a market to highlight its stations"
+  },
+  "data": {
+    "url": "data/gfk_metro_survey5_2026.csv",
+    "format": {
+      "type": "csv",
+      "parse": {
+        "value": "number"
+      }
+    }
+  },
+  "transform": [
+    {
+      "filter": "datum.metric == 'Total radio share'"
+    },
+    {
+      "window": [
+        {
+          "op": "row_number",
+          "as": "station_order"
+        }
+      ],
+      "groupby": [
+        "geography"
+      ],
+      "sort": [
+        {
+          "field": "value",
+          "order": "descending"
+        }
+      ]
+    },
+    {
+      "calculate": "datum.geography == 'Sydney' ? 1 : datum.geography == 'Melbourne' ? 2 : datum.geography == 'Brisbane' ? 3 : datum.geography == 'Adelaide' ? 4 : 5",
+      "as": "market_position"
+    },
+    {
+      "calculate": "datum.market_position + ((datum.station_order * 7) % 9 - 4) * 0.037",
+      "as": "jittered_market"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "circle",
+        "filled": true,
+        "size": 95,
+        "opacity": 0.9,
+        "stroke": "#FFFFFF",
+        "strokeWidth": 0.9
+      },
+      "encoding": {
+        "x": {
+          "field": "jittered_market",
+          "type": "quantitative",
+          "title": null,
+          "scale": {
+            "domain": [
+              0.55,
+              5.45
+            ]
+          },
+          "axis": {
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "labelAngle": 0,
+            "labelExpr": "datum.value==1?'Sydney':datum.value==2?'Melbourne':datum.value==3?'Brisbane':datum.value==4?'Adelaide':'Perth'",
+            "labelFontSize": 12
+          }
+        },
+        "y": {
+          "field": "value",
+          "type": "quantitative",
+          "title": "Station share (%)",
+          "scale": {
+            "domain": [
+              0,
+              20
+            ]
+          }
+        },
+        "color": {
+          "condition": [
+            {
+              "test": "datum.geography == SelectedMarket && datum.station_order == 1",
+              "value": "#DB6A47"
+            },
+            {
+              "test": "datum.geography == SelectedMarket",
+              "value": "#087F79"
+            },
+            {
+              "test": "datum.station_order == 1",
+              "value": "#9BABB8"
+            }
+          ],
+          "value": "#D5DEE4"
+        },
+        "tooltip": [
+          {
+            "field": "geography",
+            "title": "Market"
+          },
+          {
+            "field": "subgroup",
+            "title": "Station"
+          },
+          {
+            "field": "value",
+            "title": "Station share (%)",
+            "format": ".1f"
+          },
+          {
+            "field": "station_order",
+            "title": "Position in market"
+          }
+        ]
+      }
+    }
+  ],
+  "params": [
+    {
+      "name": "SelectedMarket",
+      "value": "Melbourne"
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "How Spotify listeners access their accounts",
+    "subtitle": "Read each grid from top-left to bottom-right; 100 squares = 100 weekly Spotify users, 2026"
+  },
+  "data": {
+    "url": "data/c07_spotify_account_waffle_2026.csv",
+    "format": {
+      "type": "csv",
+      "parse": {
+        "x": "number",
+        "y": "number"
+      }
+    }
+  },
+  "facet": {
+    "column": {
+      "field": "audience",
+      "type": "nominal",
+      "sort": [
+        "Australia overall",
+        "Regional Australia"
+      ],
+      "title": null,
+      "header": {
+        "labelFontWeight": "bold",
+        "labelFontSize": 12,
+        "labelPadding": 9
+      }
+    }
+  },
+  "spec": {
+    "width": 225,
+    "height": 245,
+    "mark": {
+      "type": "rect",
+      "stroke": "white",
+      "strokeWidth": 1.5,
+      "cornerRadius": 2
+    },
+    "encoding": {
+      "x": {
+        "field": "x",
+        "type": "ordinal",
+        "axis": null,
+        "sort": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      "y": {
+        "field": "y",
+        "type": "ordinal",
+        "axis": null,
+        "sort": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      "color": {
+        "field": "account_type",
+        "type": "nominal",
+        "title": "Spotify account type",
+        "scale": {
+          "domain": [
+            "Paid subscription",
+            "Free service only",
+            "Someone else's account",
+            "Free trial"
+          ],
+          "range": [
+            "#087F79",
+            "#7C8FA6",
+            "#E47B5C",
+            "#D4C8E2"
+          ]
+        },
+        "legend": {
+          "orient": "bottom",
+          "columns": 2
+        }
+      }
+    }
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "facet": {
+      "spacing": 20
+    }
+  }
+}

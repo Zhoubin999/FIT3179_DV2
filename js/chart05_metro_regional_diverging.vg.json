@@ -1,0 +1,142 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 650,
+  "height": 255,
+  "title": {
+    "text": "Radio technologies split differently by location",
+    "subtitle": "Regional minus metro, 2025 weekly use among adults 18+ (ACMA)"
+  },
+  "data": {
+    "url": "data/c05_audio_gap_2025.csv",
+    "format": {
+      "type": "csv",
+      "parse": {
+        "gap_pp": "number"
+      }
+    }
+  },
+  "transform": [
+    {
+      "calculate": "(datum.gap_pp>0?'+':'')+datum.gap_pp+' pp'",
+      "as": "gap_label"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "size": 23,
+        "cornerRadiusEnd": 3
+      },
+      "encoding": {
+        "x": {
+          "field": "gap_pp",
+          "type": "quantitative",
+          "title": "Percentage-point difference (regional − metropolitan)",
+          "scale": {
+            "domain": [
+              -15,
+              15
+            ]
+          },
+          "axis": {
+            "tickCount": 7
+          }
+        },
+        "y": {
+          "field": "audio_type",
+          "type": "nominal",
+          "title": null,
+          "sort": [
+            "FM radio",
+            "DAB+ radio",
+            "Internet/app radio",
+            "Music streaming",
+            "Podcasts"
+          ]
+        },
+        "color": {
+          "field": "advantage",
+          "type": "nominal",
+          "title": "Higher usage",
+          "scale": {
+            "domain": [
+              "Metro higher",
+              "Regional higher"
+            ],
+            "range": [
+              "#426B97",
+              "#087F79"
+            ]
+          },
+          "legend": {
+            "orient": "bottom"
+          }
+        },
+        "tooltip": [
+          {
+            "field": "audio_type",
+            "title": "Audio source"
+          },
+          {
+            "field": "metro_pct",
+            "title": "Metropolitan (%)"
+          },
+          {
+            "field": "regional_pct",
+            "title": "Regional (%)"
+          },
+          {
+            "field": "gap_pp",
+            "title": "Difference (pp)"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 11,
+        "fontWeight": 650,
+        "dx": 0,
+        "dy": -16,
+        "color": "#25384B"
+      },
+      "encoding": {
+        "x": {
+          "field": "gap_pp",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "audio_type",
+          "type": "nominal",
+          "sort": [
+            "FM radio",
+            "DAB+ radio",
+            "Internet/app radio",
+            "Music streaming",
+            "Podcasts"
+          ]
+        },
+        "text": {
+          "field": "gap_label"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "rule",
+        "color": "#8C97A4",
+        "strokeDash": [
+          2,
+          3
+        ]
+      },
+      "encoding": {
+        "x": {
+          "datum": 0
+        }
+      }
+    }
+  ]
+}
