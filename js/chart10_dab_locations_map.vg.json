@@ -1,0 +1,83 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 800,
+  "height": 460,
+  "title": {
+    "text": "Selected DAB+ licensed areas are geographically concentrated",
+    "subtitle": "Eleven metropolitan or regional areas in ACMA licensed transmitter data; NOT broadcast coverage boundaries"
+  },
+  "data": {
+    "url": "data/c10_dab_service_city_locations.csv",
+    "format": {
+      "type": "csv",
+      "parse": {
+        "latitude": "number",
+        "longitude": "number"
+      }
+    }
+  },
+  "projection": {
+    "type": "mercator",
+    "center": [
+      134,
+      -27.5
+    ],
+    "scale": 570
+  },
+  "layer": [
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/cartdeco/Australia-json-data/master/aus25fgd_r.topojson",
+        "format": {
+          "type": "topojson",
+          "feature": "collection"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#F0F2F4",
+        "stroke": "#CBD5DF",
+        "strokeWidth": 0.48
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "size": 180,
+        "fill": "#7753AC",
+        "opacity": 0.9,
+        "stroke": "#fff",
+        "strokeWidth": 1.6
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "tooltip": [
+          {
+            "field": "city",
+            "title": "Licensed area"
+          },
+          {
+            "field": "state",
+            "title": "State"
+          },
+          {
+            "field": "note",
+            "title": "Limit"
+          }
+        ]
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
+}

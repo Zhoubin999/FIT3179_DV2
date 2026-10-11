@@ -1,0 +1,101 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 800,
+  "height": 480,
+  "title": {
+    "text": "FM retransmission structures differ by state",
+    "subtitle": "Share of deduplicated issued FM transmitter records classified as retransmission, ACMA July 2026"
+  },
+  "data": {
+    "url": "https://raw.githubusercontent.com/cartdeco/Australia-json-data/master/aus25fgd_r.topojson",
+    "format": {
+      "type": "topojson",
+      "feature": "collection"
+    }
+  },
+  "projection": {
+    "type": "mercator",
+    "center": [
+      134,
+      -27.5
+    ],
+    "scale": 590
+  },
+  "transform": [
+    {
+      "calculate": "datum.properties.STATE == '9' ? 'WA' : datum.properties.STATE == '5' ? 'QLD' : datum.properties.STATE == '4' ? 'NT' : datum.properties.STATE == '6' ? 'SA' : datum.properties.STATE == '3' ? 'NSW' : datum.properties.STATE == '8' ? 'VIC' : datum.properties.STATE == '7' ? 'TAS' : datum.properties.STATE == '1' ? 'ACT' : 'Other'",
+      "as": "state"
+    },
+    {
+      "lookup": "state",
+      "from": {
+        "data": {
+          "url": "data/c11_fm_retransmission_by_state_2026.csv",
+          "format": {
+            "type": "csv",
+            "parse": {
+              "fm_retransmission_share_pct": "number"
+            }
+          }
+        },
+        "key": "state",
+        "fields": [
+          "state_name",
+          "fm_retransmission_share_pct",
+          "fm_retransmission_total",
+          "fm_issued_unique_records"
+        ]
+      }
+    }
+  ],
+  "mark": {
+    "type": "geoshape",
+    "stroke": "#FFFFFF",
+    "strokeWidth": 0.85
+  },
+  "encoding": {
+    "color": {
+      "field": "fm_retransmission_share_pct",
+      "type": "quantitative",
+      "title": "FM retransmission (%)",
+      "scale": {
+        "domain": [
+          0,
+          70
+        ],
+        "range": [
+          "#F0F4F2",
+          "#006B65"
+        ]
+      },
+      "legend": {
+        "orient": "right",
+        "gradientLength": 180
+      }
+    },
+    "tooltip": [
+      {
+        "field": "state_name",
+        "title": "State/Territory"
+      },
+      {
+        "field": "fm_retransmission_share_pct",
+        "title": "Share (%)",
+        "format": ".1f"
+      },
+      {
+        "field": "fm_retransmission_total",
+        "title": "Retransmission records"
+      },
+      {
+        "field": "fm_issued_unique_records",
+        "title": "All issued FM records"
+      }
+    ]
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
+}
