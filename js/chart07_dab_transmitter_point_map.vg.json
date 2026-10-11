@@ -7,33 +7,25 @@
     "text": "Where Are Licensed DAB+ Transmitter Sites Located in Australia?",
     "subtitle": [
       "ACMA July 2026: 29 mapped coordinates from 63 digital-radio licence records",
-      "Each point shows a site location, not its signal coverage"
+      "Each dot represents a site location, not its broadcast coverage"
     ]
   },
 
-  "projection": {"type": "mercator"},
-
-  "params": [
-    {
-      "name": "State_selection",
-      "value": "All states",
-      "bind": {
-        "input": "select",
-        "options": ["All states", "NSW", "VIC", "QLD", "SA", "WA", "TAS", "ACT", "NT"],
-        "name": "State: "
-      }
-    }
-  ],
+  "projection": {
+    "type": "mercator",
+    "center": [134, -27.5],
+    "scale": 650
+  },
 
   "layer": [
     {
       "data": {
-        "url": "https://raw.githubusercontent.com/rowanhogan/australian-states/master/states.min.geojson",
-        "format": {"type": "json", "property": "features"}
+        "url": "https://raw.githubusercontent.com/cartdeco/Australia-json-data/master/aus25fgd_r.topojson",
+        "format": {"type": "topojson", "feature": "collection"}
       },
       "mark": {
         "type": "geoshape",
-        "fill": "#F1F5F9",
+        "fill": "#EEF2F7",
         "stroke": "#94A3B8",
         "strokeWidth": 0.7
       }
@@ -51,12 +43,7 @@
       "transform": [
         {"filter": "isValid(datum.latitude) && isValid(datum.longitude)"},
         {
-          "filter": "State_selection == 'All states' || datum.state == State_selection"
-        },
-        {
-          "aggregate": [
-            {"op": "count", "as": "licence_records"}
-          ],
+          "aggregate": [{"op": "count", "as": "licence_records"}],
           "groupby": ["latitude", "longitude", "state", "area_served", "site_name"]
         }
       ],
@@ -64,7 +51,7 @@
       "mark": {
         "type": "circle",
         "filled": true,
-        "size": 95,
+        "size": 110,
         "color": "#6D28D9",
         "opacity": 0.85,
         "stroke": "#FFFFFF",
@@ -81,7 +68,7 @@
           {
             "field": "licence_records",
             "type": "quantitative",
-            "title": "Licence entries at this site",
+            "title": "Licence entries at site",
             "format": ".0f"
           }
         ]
