@@ -1,0 +1,152 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 760,
+  "height": 430,
+
+  "title": {
+    "text": "Which Radio Stations Lead Each Australian Metro Market?",
+    "subtitle": "Top 10 stations by total radio share, GfK Survey 5 (2026), people aged 10+"
+  },
+
+  "data": {
+    "url": "data/gfk_metro_survey5_2026.csv",
+    "format": {
+      "type": "csv",
+      "parse": {"value": "number"}
+    }
+  },
+
+  "params": [
+    {
+      "name": "Market_selection",
+      "value": "Melbourne",
+      "bind": {
+        "input": "select",
+        "options": ["Sydney", "Melbourne", "Brisbane", "Adelaide", "Perth"],
+        "name": "Select market: "
+      }
+    }
+  ],
+
+  "transform": [
+    {"filter": "datum.source_id == 'GfK_S5_2026'"},
+    {"filter": "datum.metric == 'Total radio share'"},
+    {"filter": "datum.geography == Market_selection"},
+    {
+      "calculate": "toNumber(split(split(datum.notes, ';')[0], '=')[1])",
+      "as": "previous_share"
+    },
+    {
+      "calculate": "datum.value - datum.previous_share",
+      "as": "change_pp"
+    },
+    {
+      "window": [
+        {"op": "row_number", "as": "position"},
+        {"op": "lead", "field": "value", "as": "next_share"}
+      ],
+      "sort": [
+        {"field": "value", "order": "descending"},
+        {"field": "subgroup", "order": "ascending"}
+      ]
+    },
+    {"filter": "datum.position <= 10"},
+    {
+      "calculate": "datum.value - datum.next_share",
+      "as": "lead_pp"
+    },
+    {
+      "calculate": "format(datum.value, '.1f') + '%'",
+      "as": "share_label"
+    },
+    {
+      "calculate": "'Lead over second place: ' + format(datum.lead_pp, '.1f') + ' pp'",
+      "as": "leader_note"
+    }
+  ],
+
+  "encoding": {
+    "x": {
+      "field": "value",
+      "type": "quantitative",
+      "title": "Total radio share (%)",
+      "scale": {"domain": [0, 20]},
+      "axis": {"tickCount": 6}
+    },
+    "y": {
+      "field": "subgroup",
+      "type": "nominal",
+      "title": null,
+      "sort": {"field": "position", "order": "ascending"},
+      "axis": {"labelFontSize": 12, "labelPadding": 10}
+    }
+  },
+
+  "layer": [
+    {
+      "mark": {
+        "type": "rule",
+        "color": "#CBD5E1",
+        "strokeWidth": 3
+      },
+      "encoding": {
+        "x2": {"datum": 0}
+      }
+    },
+
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 175,
+        "stroke": "white",
+        "strokeWidth": 1.5
+      },
+      "encoding": {
+        "color": {"value": "#C45A36"},
+        "tooltip": [
+          {"field": "subgroup", "type": "nominal", "title": "Station"},
+          {"field": "geography", "type": "nominal", "title": "Market"},
+          {"field": "position", "type": "quantitative", "title": "Position", "format": "d"},
+          {"field": "value", "type": "quantitative", "title": "Current share (%)", "format": ".1f"},
+          {"field": "previous_share", "type": "quantitative", "title": "Previous survey share (%)", "format": ".1f"},
+          {"field": "change_pp", "type": "quantitative", "title": "Change (pp)", "format": "+.1f"}
+        ]
+      }
+    },
+
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 12,
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "color": "#1F2937"
+      },
+      "encoding": {
+        "text": {"field": "share_label", "type": "nominal"}
+      }
+    },
+
+    {
+      "transform": [
+        {"filter": "datum.position == 1"}
+      ],
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "bottom",
+        "dx": -8,
+        "dy": -13,
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "color": "#9A3412"
+      },
+      "encoding": {
+        "text": {"field": "leader_note", "type": "nominal"}
+      }
+    }
+  ]
+}
