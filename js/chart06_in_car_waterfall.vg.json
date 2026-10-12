@@ -5,7 +5,7 @@
     "subtitle": "Apple CarPlay / Android Auto ownership among adult car travellers, 2019–2026"
   },
   "data": {
-    "url": "data/australian_radio_combined_long.csv",
+    "url": "https://raw.githubusercontent.com/Zhoubin999/FIT3179_DV2-critique/main/data/australian_radio_combined_long.csv",
     "format": {
       "type": "csv",
       "parse": {
@@ -168,6 +168,71 @@
               "title": "Year-on-year change"
             }
           ]
+        }
+      },
+      {
+        "transform": [
+          {
+            "filter": "datum.year > 2019 && datum.change_pp == 0"
+          }
+        ],
+        "mark": {
+          "type": "tick",
+          "orient": "horizontal",
+          "size": 27,
+          "thickness": 4,
+          "color": "#64748B"
+        },
+        "encoding": {
+          "y": {
+            "field": "value",
+            "type": "quantitative"
+          },
+          "tooltip": [
+            {
+              "field": "area",
+              "type": "nominal",
+              "title": "Area"
+            },
+            {
+              "field": "year",
+              "type": "ordinal",
+              "title": "Year"
+            },
+            {
+              "field": "value",
+              "type": "quantitative",
+              "title": "Ownership (%)",
+              "format": ".0f"
+            },
+            {
+              "value": "0 pp",
+              "title": "Year-on-year change"
+            }
+          ]
+        }
+      },
+      {
+        "transform": [
+          {
+            "filter": "datum.year > 2019 && datum.change_pp == 0"
+          }
+        ],
+        "mark": {
+          "type": "text",
+          "dy": 16,
+          "fontSize": 11,
+          "fontWeight": "bold",
+          "color": "#64748B"
+        },
+        "encoding": {
+          "y": {
+            "field": "value",
+            "type": "quantitative"
+          },
+          "text": {
+            "value": "0 pp"
+          }
         }
       },
       {
