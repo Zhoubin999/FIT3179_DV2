@@ -34,15 +34,15 @@ vegaEmbed('#c01', "js/chart01_listening_trend.vg.json", embedOptions).catch(cons
 vegaEmbed('#c02', "js/chart02_streaming_services_heatmap.vg.json", embedOptions).catch(console.error);
 
 // ---------- Chapter 2: who listens ----------
-vegaEmbed('#c04', "js/chart04_radio_age_dumbbell.vg.json", embedOptions).catch(console.error);
-vegaEmbed('#c03', "js/chart03_podcast_overlap_upset.vg.json", embedOptions).catch(console.error);
+vegaEmbed('#c03', "js/chart03_radio_age_dumbbell.vg.json", embedOptions).catch(console.error);
+vegaEmbed('#c04', "js/chart04_podcast_overlap_upset.vg.json", embedOptions).catch(console.error);
 vegaEmbed('#c05', "js/chart05_metro_regional_diverging.vg.json", embedOptions).catch(console.error);
 
 // ---------- Chapter 3: new ways to listen, and the transmitters behind radio ----------
 vegaEmbed('#c06', "js/chart06_in_car_waterfall.vg.json", embedOptions).catch(console.error);
 vegaEmbed('#c07', "js/chart07_spotify_account_mix.vg.json", embedOptions).catch(console.error);
-vegaEmbed('#c10', "js/chart10_dab_locations_map.vg.json", embedOptions).catch(console.error);
-vegaEmbed('#c11', "js/chart11_fm_retransmission_choropleth.vg.json", embedOptions).catch(console.error);
+vegaEmbed('#c08', "js/chart08_dab_locations_map.vg.json", embedOptions).catch(console.error);
+vegaEmbed('#c09', "js/chart09_fm_retransmission_choropleth.vg.json", embedOptions).catch(console.error);
 
 
 // ---------- Chapter 4: local markets (four linked charts) ----------
@@ -85,10 +85,10 @@ function embedMarketChart(elementId, specUrl) {
   }).catch(console.error);
 }
 
-embedMarketChart('#c08', "js/chart08_market_station_distribution.vg.json");
-embedMarketChart('#c12', "js/chart12_market_leaders_symbol_map.vg.json");
-embedMarketChart('#c13', "js/chart13_market_station_shares.vg.json");
-embedMarketChart('#c09', "js/chart09_station_rank_bump.vg.json");
+embedMarketChart('#c10', "js/chart10_market_station_distribution.vg.json");
+embedMarketChart('#c11', "js/chart11_market_leaders_symbol_map.vg.json");
+embedMarketChart('#c12', "js/chart12_market_station_shares.vg.json");
+embedMarketChart('#c13', "js/chart13_station_rank_bump.vg.json");
 
 cityButtons.forEach(function (button) {
   button.addEventListener('click', function () {
