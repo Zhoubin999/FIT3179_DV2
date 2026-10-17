@@ -2,17 +2,6 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 800,
   "height": 480,
-  "title": {
-    "text": "FM retransmission structures differ by state",
-    "subtitle": "Share of deduplicated issued FM transmitter records classified as retransmission, ACMA July 2026"
-  },
-  "data": {
-    "url": "https://raw.githubusercontent.com/cartdeco/Australia-json-data/master/aus25fgd_r.topojson",
-    "format": {
-      "type": "topojson",
-      "feature": "collection"
-    }
-  },
   "projection": {
     "type": "mercator",
     "center": [
@@ -21,81 +10,166 @@
     ],
     "scale": 590
   },
-  "transform": [
-    {
-      "calculate": "datum.properties.STATE == '9' ? 'WA' : datum.properties.STATE == '5' ? 'QLD' : datum.properties.STATE == '4' ? 'NT' : datum.properties.STATE == '6' ? 'SA' : datum.properties.STATE == '3' ? 'NSW' : datum.properties.STATE == '8' ? 'VIC' : datum.properties.STATE == '7' ? 'TAS' : datum.properties.STATE == '1' ? 'ACT' : 'Other'",
-      "as": "state"
-    },
-    {
-      "lookup": "state",
-      "from": {
-        "data": {
-          "url": "data/c11_fm_retransmission_by_state_2026.csv",
-          "format": {
-            "type": "csv",
-            "parse": {
-              "fm_retransmission_share_pct": "number"
-            }
-          }
-        },
-        "key": "state",
-        "fields": [
-          "state_name",
-          "fm_retransmission_share_pct",
-          "fm_retransmission_total",
-          "fm_issued_unique_records"
-        ]
-      }
-    }
-  ],
-  "mark": {
-    "type": "geoshape",
-    "stroke": "#FFFFFF",
-    "strokeWidth": 0.85
-  },
-  "encoding": {
-    "color": {
-      "field": "fm_retransmission_share_pct",
-      "type": "quantitative",
-      "title": "FM retransmission (%)",
-      "scale": {
-        "domain": [
-          0,
-          70
-        ],
-        "range": [
-          "#F0F4F2",
-          "#006B65"
-        ]
-      },
-      "legend": {
-        "orient": "right",
-        "gradientLength": 180
-      }
-    },
-    "tooltip": [
-      {
-        "field": "state_name",
-        "title": "State/Territory"
-      },
-      {
-        "field": "fm_retransmission_share_pct",
-        "title": "Share (%)",
-        "format": ".1f"
-      },
-      {
-        "field": "fm_retransmission_total",
-        "title": "Retransmission records"
-      },
-      {
-        "field": "fm_issued_unique_records",
-        "title": "All issued FM records"
-      }
-    ]
-  },
   "config": {
     "view": {
       "stroke": null
     }
-  }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "geoshape",
+        "stroke": "#FFFFFF",
+        "strokeWidth": 0.85
+      },
+      "encoding": {
+        "color": {
+          "field": "fm_retransmission_share_pct",
+          "type": "quantitative",
+          "title": "FM retransmission (%)",
+          "scale": {
+            "domain": [
+              0,
+              70
+            ],
+            "range": [
+              "#F0F4F2",
+              "#006B65"
+            ]
+          },
+          "legend": {
+            "orient": "right",
+            "gradientLength": 180,
+            "values": [
+              0,
+              10,
+              20,
+              30,
+              40,
+              50,
+              60,
+              70
+            ]
+          }
+        },
+        "tooltip": [
+          {
+            "field": "state_name",
+            "title": "State/Territory"
+          },
+          {
+            "field": "fm_retransmission_share_pct",
+            "title": "Share (%)",
+            "format": ".1f"
+          },
+          {
+            "field": "fm_retransmission_total",
+            "title": "Retransmission records"
+          },
+          {
+            "field": "fm_issued_unique_records",
+            "title": "All issued FM records"
+          }
+        ]
+      },
+      "data": {
+        "url": "https://raw.githubusercontent.com/cartdeco/Australia-json-data/master/aus25fgd_r.topojson",
+        "format": {
+          "type": "topojson",
+          "feature": "collection"
+        }
+      },
+      "transform": [
+        {
+          "calculate": "datum.properties.STATE == '9' ? 'WA' : datum.properties.STATE == '5' ? 'QLD' : datum.properties.STATE == '4' ? 'NT' : datum.properties.STATE == '6' ? 'SA' : datum.properties.STATE == '3' ? 'NSW' : datum.properties.STATE == '8' ? 'VIC' : datum.properties.STATE == '7' ? 'TAS' : datum.properties.STATE == '1' ? 'ACT' : 'Other'",
+          "as": "state"
+        },
+        {
+          "lookup": "state",
+          "from": {
+            "data": {
+              "url": "data/c11_fm_retransmission_by_state_2026.csv",
+              "format": {
+                "type": "csv",
+                "parse": {
+                  "fm_retransmission_share_pct": "number"
+                }
+              }
+            },
+            "key": "state",
+            "fields": [
+              "state_name",
+              "fm_retransmission_share_pct",
+              "fm_retransmission_total",
+              "fm_issued_unique_records"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "data": {
+        "url": "data/c11_fm_retransmission_by_state_2026.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "fm_retransmission_share_pct": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "calculate": "datum.state == 'WA' ? 121 : datum.state == 'NT' ? 134 : datum.state == 'QLD' ? 145 : datum.state == 'SA' ? 135 : datum.state == 'NSW' ? 146 : datum.state == 'VIC' ? 144.2 : datum.state == 'TAS' ? 146.8 : 149.3",
+          "as": "label_lon"
+        },
+        {
+          "calculate": "datum.state == 'WA' ? -25 : datum.state == 'NT' ? -19.5 : datum.state == 'QLD' ? -23 : datum.state == 'SA' ? -29.6 : datum.state == 'NSW' ? -32.8 : datum.state == 'VIC' ? -37.3 : datum.state == 'TAS' ? -42 : -34.9",
+          "as": "label_lat"
+        },
+        {
+          "calculate": "datum.state + ' ' + format(datum.fm_retransmission_share_pct,'.1f') + '%'",
+          "as": "label"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "fontSize": 13,
+        "fontWeight": "bold",
+        "align": "center",
+        "baseline": "middle"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "label_lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "label_lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label",
+          "type": "nominal"
+        },
+        "color": {
+          "condition": {
+            "test": "datum.fm_retransmission_share_pct >= 40",
+            "value": "#FFFFFF"
+          },
+          "value": "#17374A"
+        },
+        "tooltip": [
+          {
+            "field": "state_name",
+            "title": "State / territory"
+          },
+          {
+            "field": "fm_retransmission_share_pct",
+            "title": "FM retransmission (%)",
+            "format": ".1f"
+          }
+        ]
+      }
+    }
+  ]
 }

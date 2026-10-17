@@ -2,10 +2,6 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 900,
   "height": 340,
-  "title": {
-    "text": "Local markets have different competitive profiles",
-    "subtitle": "All station shares remain visible; choose a market to highlight its stations"
-  },
   "data": {
     "url": "data/gfk_metro_survey5_2026.csv",
     "format": {

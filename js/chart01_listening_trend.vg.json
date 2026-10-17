@@ -2,23 +2,23 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 800,
   "height": 450,
-
-  "title": {
-    "text": "How Has Audio Listening Changed in Australia?",
-    "subtitle": "Weekly reach among Australians aged 10+, 2017–2026"
-  },
-
   "data": {
     "url": "data/infinite_dial_national_2026.csv",
     "format": {
       "type": "csv",
-      "parse": {"year": "number", "value": "number"}
+      "parse": {
+        "year": "number",
+        "value": "number"
+      }
     }
   },
-
   "transform": [
-    {"filter": "datum.subgroup_type == 'Overall'"},
-    {"filter": "datum.subgroup == 'All population 10+'"},
+    {
+      "filter": "datum.subgroup_type == 'Overall'"
+    },
+    {
+      "filter": "datum.subgroup == 'All population 10+'"
+    },
     {
       "filter": "datum.metric == 'Total radio weekly reach' || datum.metric == 'Weekly streaming audio listening'"
     },
@@ -27,16 +27,31 @@
       "as": "audio_type"
     }
   ],
-
   "encoding": {
     "x": {
       "field": "year",
       "type": "quantitative",
       "title": "Year",
-      "scale": {"domain": [2017, 2026]},
+      "scale": {
+        "domain": [
+          2017,
+          2026
+        ]
+      },
       "axis": {
         "format": "d",
-        "values": [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        "values": [
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
         "labelAngle": 0
       }
     },
@@ -44,16 +59,25 @@
       "field": "value",
       "type": "quantitative",
       "title": "Weekly listening reach (%)",
-      "scale": {"domain": [0, 100]},
-      "axis": {"tickCount": 6}
+      "scale": {
+        "domain": [
+          0,
+          100
+        ]
+      },
+      "axis": {
+        "tickCount": 6
+      }
     }
   },
-
   "layer": [
     {
       "mark": {
         "type": "line",
-        "point": {"filled": true, "size": 60},
+        "point": {
+          "filled": true,
+          "size": 60
+        },
         "strokeWidth": 3
       },
       "encoding": {
@@ -62,21 +86,42 @@
           "type": "nominal",
           "title": "Audio type",
           "scale": {
-            "domain": ["Total radio", "Streaming audio"],
-            "range": ["#2563EB", "#E76F51"]
+            "domain": [
+              "Total radio",
+              "Streaming audio"
+            ],
+            "range": [
+              "#2563EB",
+              "#E76F51"
+            ]
           }
         },
         "tooltip": [
-          {"field": "year", "type": "quantitative", "title": "Year", "format": "d"},
-          {"field": "audio_type", "type": "nominal", "title": "Audio type"},
-          {"field": "value", "type": "quantitative", "title": "Weekly reach (%)", "format": ".0f"}
+          {
+            "field": "year",
+            "type": "quantitative",
+            "title": "Year",
+            "format": "d"
+          },
+          {
+            "field": "audio_type",
+            "type": "nominal",
+            "title": "Audio type"
+          },
+          {
+            "field": "value",
+            "type": "quantitative",
+            "title": "Weekly reach (%)",
+            "format": ".0f"
+          }
         ]
       }
     },
-
     {
       "transform": [
-        {"filter": "datum.year == 2025 && datum.audio_type == 'Streaming audio'"}
+        {
+          "filter": "datum.year == 2025 && datum.audio_type == 'Streaming audio'"
+        }
       ],
       "mark": {
         "type": "point",
@@ -87,10 +132,11 @@
         "strokeWidth": 2
       }
     },
-
     {
       "transform": [
-        {"filter": "datum.year == 2025 && datum.audio_type == 'Streaming audio'"}
+        {
+          "filter": "datum.year == 2025 && datum.audio_type == 'Streaming audio'"
+        }
       ],
       "mark": {
         "type": "text",
@@ -103,7 +149,9 @@
         "color": "#334155"
       },
       "encoding": {
-        "text": {"value": "2025: Streaming reaches 79%, radio 78%"}
+        "text": {
+          "value": "2025: Streaming reaches 79%, radio 78%"
+        }
       }
     }
   ]

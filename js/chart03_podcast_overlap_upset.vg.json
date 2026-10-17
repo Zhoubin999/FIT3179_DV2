@@ -1,9 +1,5 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": {
-    "text": "Listening and watching podcasts overlap",
-    "subtitle": "Equal-size 100% population panels, ages 10+, 2026; compare the purple overlap"
-  },
   "data": {
     "url": "data/c03_podcast_overlap_2026.csv",
     "format": {

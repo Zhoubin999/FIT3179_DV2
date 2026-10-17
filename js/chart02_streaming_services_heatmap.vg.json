@@ -2,10 +2,6 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 640,
   "height": 248,
-  "title": {
-    "text": "Not all streaming services grew equally",
-    "subtitle": "Weekly use among Australians aged 10+, 2024–2026"
-  },
   "data": {
     "url": "data/infinite_dial_national_2026.csv",
     "format": {

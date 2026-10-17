@@ -2,10 +2,6 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 800,
   "height": 470,
-  "title": {
-    "text": "How dominant is the leading station in each metro market?",
-    "subtitle": "Five metro markets, GfK Survey 5 (2026); circle AREA ∝ share, colour reinforces small differences"
-  },
   "data": {
     "url": "data/c12_market_leaders_2026.csv",
     "format": {
@@ -45,7 +41,7 @@
       "mark": {
         "type": "circle",
         "filled": true,
-        "opacity": 0.93
+        "opacity": 0.94
       },
       "encoding": {
         "longitude": {
@@ -59,50 +55,7 @@
         "size": {
           "field": "share_pct",
           "type": "quantitative",
-          "title": "Leading share (%)",
-          "scale": {
-            "type": "linear",
-            "domain": [
-              0,
-              20
-            ],
-            "range": [
-              0,
-              4900
-            ],
-            "zero": true
-          },
-          "legend": {
-            "orient": "right",
-            "values": [
-              5,
-              10,
-              15,
-              20
-            ],
-            "symbolFillColor": "#E99B7D",
-            "symbolStrokeColor": "#FFFFFF"
-          }
-        },
-        "tooltip": [
-          {
-            "field": "market",
-            "title": "Market"
-          },
-          {
-            "field": "station",
-            "title": "Top station"
-          },
-          {
-            "field": "share_pct",
-            "title": "Share (%)",
-            "format": ".1f"
-          }
-        ],
-        "color": {
-          "field": "share_pct",
-          "type": "quantitative",
-          "legend": null,
+          "title": "Leading station share (%)",
           "scale": {
             "type": "linear",
             "domain": [
@@ -110,80 +63,94 @@
               18
             ],
             "range": [
-              "#F3BFA6",
-              "#B83E35"
+              750,
+              8200
+            ],
+            "zero": false
+          },
+          "legend": {
+            "orient": "right",
+            "title": "Leader share (12–18%)",
+            "values": [
+              12,
+              14,
+              16,
+              18
+            ],
+            "format": ".0f",
+            "symbolFillColor": "#DF8C79",
+            "symbolStrokeColor": "#FFFFFF"
+          }
+        },
+        "color": {
+          "field": "share_pct",
+          "type": "quantitative",
+          "legend": null,
+          "scale": {
+            "domain": [
+              12,
+              18
+            ],
+            "range": [
+              "#F6BDA8",
+              "#B94F43"
             ]
           }
         },
         "stroke": {
           "condition": {
             "test": "datum.market == SelectedMarket",
-            "value": "#163F51"
+            "value": "#153B4D"
           },
           "value": "#FFFFFF"
         },
         "strokeWidth": {
           "condition": {
             "test": "datum.market == SelectedMarket",
-            "value": 3.3
+            "value": 3.1
           },
-          "value": 1.5
-        }
-      }
-    },
-    {
-      "mark": {
-        "type": "text",
-        "fontSize": 12,
-        "fontWeight": "bold",
-        "baseline": "middle",
-        "align": "center"
-      },
-      "encoding": {
-        "longitude": {
-          "field": "longitude",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "latitude",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "share_label",
-          "type": "nominal"
-        },
-        "color": {
-          "condition": {
-            "test": "datum.share_pct >= 15",
-            "value": "#FFFFFF"
-          },
-          "value": "#24384B"
+          "value": 1.6
         },
         "tooltip": [
           {
             "field": "market",
+            "type": "nominal",
             "title": "Market"
           },
           {
             "field": "station",
-            "title": "Top station"
+            "type": "nominal",
+            "title": "Leading station"
           },
           {
             "field": "share_pct",
-            "title": "Share (%)",
+            "type": "quantitative",
+            "title": "Radio share (%)",
             "format": ".1f"
+          },
+          {
+            "field": "survey",
+            "type": "nominal",
+            "title": "Source survey"
           }
         ]
       }
     },
     {
+      "transform": [
+        {
+          "filter": "datum.market == 'Perth'"
+        }
+      ],
       "mark": {
         "type": "text",
-        "fontSize": 13,
-        "fontWeight": 600,
-        "dy": 42,
-        "baseline": "top",
-        "color": "#213C4F"
+        "dx": 0,
+        "dy": 68,
+        "align": "center",
+        "baseline": "middle",
+        "fontSize": 15,
+        "fontWeight": "bold",
+        "color": "#1F3545"
       },
       "encoding": {
         "longitude": {
@@ -195,7 +162,131 @@
           "type": "quantitative"
         },
         "text": {
-          "field": "market",
+          "field": "label",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.market == 'Adelaide'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "dx": -18,
+        "dy": 62,
+        "align": "center",
+        "baseline": "middle",
+        "fontSize": 15,
+        "fontWeight": "bold",
+        "color": "#1F3545"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.market == 'Melbourne'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "dx": 28,
+        "dy": 66,
+        "align": "center",
+        "baseline": "middle",
+        "fontSize": 15,
+        "fontWeight": "bold",
+        "color": "#1F3545"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.market == 'Sydney'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "dx": 34,
+        "dy": -55,
+        "align": "center",
+        "baseline": "middle",
+        "fontSize": 15,
+        "fontWeight": "bold",
+        "color": "#1F3545"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.market == 'Brisbane'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "dx": 38,
+        "dy": -40,
+        "align": "center",
+        "baseline": "middle",
+        "fontSize": 15,
+        "fontWeight": "bold",
+        "color": "#1F3545"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label",
           "type": "nominal"
         }
       }
@@ -214,8 +305,8 @@
   ],
   "transform": [
     {
-      "calculate": "format(datum.share_pct, '.1f')+'%'",
-      "as": "share_label"
+      "calculate": "datum.market + '  ' + format(datum.share_pct, '.1f') + '%'",
+      "as": "label"
     }
   ]
 }

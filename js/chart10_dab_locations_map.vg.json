@@ -2,17 +2,14 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 800,
   "height": 460,
-  "title": {
-    "text": "Selected DAB+ licensed areas are geographically concentrated",
-    "subtitle": "Eleven metropolitan or regional areas in ACMA licensed transmitter data; NOT broadcast coverage boundaries"
-  },
   "data": {
     "url": "data/c10_dab_service_city_locations.csv",
     "format": {
       "type": "csv",
       "parse": {
         "latitude": "number",
-        "longitude": "number"
+        "longitude": "number",
+        "licence_entries_in_named_area": "number"
       }
     }
   },
@@ -65,13 +62,43 @@
           },
           {
             "field": "state",
-            "title": "State"
+            "title": "State / territory"
           },
           {
-            "field": "note",
-            "title": "Limit"
+            "field": "frequency_blocks_in_named_area",
+            "title": "Frequency blocks at listed area"
+          },
+          {
+            "field": "licence_entries_in_named_area",
+            "type": "quantitative",
+            "title": "Licence entries in this named area",
+            "format": ".0f"
           }
         ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "color": "#243F52",
+        "dy": -14,
+        "baseline": "bottom"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "city",
+          "type": "nominal"
+        }
       }
     }
   ],

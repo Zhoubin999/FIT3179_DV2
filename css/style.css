@@ -536,3 +536,52 @@ a:hover {
   .market-switch label { display: none; }
   .market-switch select { max-width: 128px; }
 }
+
+
+/* Post-critique readability and interaction guidance */
+body { font-size: 16px; }
+.card-heading { font-size: 22px; }
+.interpretation { font-size: 15px; max-width: 76ch; }
+.chapter-heading p { font-size: 15px; max-width: 76ch; }
+.chart-context { color: #5A7082; font-size: 13px; margin: 1px 0 12px; line-height: 1.5; }
+.map-reading-note { font-size: 13px; max-width: 86ch; color: #576F7F; margin-top: 14px; }
+.reading-key { background: #EAF2F2; border-left: 3px solid #087F79; padding: 11px 16px; margin: 12px 0 4px; color: #345367; font-size: 14px; line-height: 1.5; }
+.author-line { font-size: 13px; color: #CBE0E5; margin-top: 22px; }
+.market-guide { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 17px 22px; margin-bottom: 20px; border-radius: 14px; border: 1px solid #BCD7D5; background: #EAF4F2; }
+.market-guide-copy { max-width: 65ch; }
+.market-guide strong { font-size: 16px; color: #174B54; }
+.market-guide p { font-size: 14px; margin: 5px 0 0; line-height: 1.5; color: #3B5B63; }
+.market-guide .market-switch { display: flex; align-items: center; white-space: nowrap; margin: 0; }
+.market-guide .market-switch label { display: inline; }
+@media (max-width:760px) {
+  .market-guide { flex-direction: column; align-items: stretch; }
+  .market-guide .market-switch { justify-content: flex-start; }
+  .market-guide .market-switch label { display: inline; }
+  .card-heading { font-size: 20px; }
+  .interpretation { font-size: 14px; }
+}
+
+/* v0.10: APA 7th references appear together at the bottom of the page. */
+.reference-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 24px;
+  max-width: 104ch;
+}
+.reference-list li {
+  margin: 0 0 14px;
+  padding-left: 2em;
+  text-indent: -2em;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+  line-height: 1.75;
+  color: #3F5768;
+}
+.reference-list a {
+  color: #087F79;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+@media (max-width:640px) {
+  .reference-list li { font-size: 13px; }
+}

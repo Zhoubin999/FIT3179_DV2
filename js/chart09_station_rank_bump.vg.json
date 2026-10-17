@@ -2,10 +2,6 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 920,
   "height": 330,
-  "title": {
-    "text": "How stable are leading radio station rankings?",
-    "subtitle": "Selected metro market · Surveys 3–5 2026 · the top five stations in Survey 5"
-  },
   "data": {
     "url": "data/c05_station_rank_history_2026.csv",
     "format": {

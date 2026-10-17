@@ -2,10 +2,6 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 620,
   "height": 250,
-  "title": {
-    "text": "A generational divide in radio reach",
-    "subtitle": "Weekly radio listening, 2026: Australia overall versus Regional Australia"
-  },
   "data": {
     "url": "data/c04_radio_age_comparison_2026.csv",
     "format": {

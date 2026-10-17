@@ -2,10 +2,6 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 650,
   "height": 255,
-  "title": {
-    "text": "Radio technologies split differently by location",
-    "subtitle": "Regional minus metro, 2025 weekly use among adults 18+ (ACMA)"
-  },
   "data": {
     "url": "data/c05_audio_gap_2025.csv",
     "format": {

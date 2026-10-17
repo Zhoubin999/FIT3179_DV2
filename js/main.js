@@ -13,16 +13,16 @@ const visualConfig = {
     labelFont: 'DM Sans, Arial', titleFont: 'DM Sans, Arial',
     labelColor: '#526475', titleColor: '#4B6171',
     domainColor: '#ACB9C3', tickColor: '#ACB9C3', gridColor: '#E8ECEF',
-    labelFontSize: 11, titleFontSize: 12
+    labelFontSize: 12, titleFontSize: 13
   },
   header: {labelFont: 'DM Sans, Arial', titleFont: 'DM Sans, Arial'},
   legend: {
     labelFont: 'DM Sans, Arial', titleFont: 'DM Sans, Arial',
-    labelColor: '#4D6071', labelFontSize: 11, titleFontSize: 11
+    labelColor: '#4D6071', labelFontSize: 12, titleFontSize: 12
   },
   title: {
-    font: 'Outfit, Arial', fontWeight: 600, fontSize: 14,
-    subtitleFont: 'DM Sans, Arial', subtitleFontSize: 10,
+    font: 'Outfit, Arial', fontWeight: 600, fontSize: 16,
+    subtitleFont: 'DM Sans, Arial', subtitleFontSize: 12,
     color: '#23384A', subtitleColor: '#657988',
     anchor: 'start', offset: 12
   },
