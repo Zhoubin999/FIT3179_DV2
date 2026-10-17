@@ -1,312 +1,154 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 800,
+  "width": "container",
   "height": 470,
-  "data": {
-    "url": "data/c12_market_leaders_2026.csv",
-    "format": {
-      "type": "csv",
-      "parse": {
-        "share_pct": "number",
-        "latitude": "number",
-        "longitude": "number"
-      }
-    }
-  },
-  "projection": {
-    "type": "mercator",
-    "center": [
-      134,
-      -27.5
-    ],
-    "scale": 590
-  },
+  "params": [
+    {"name": "SelectedMarket", "value": "Melbourne"}
+  ],
+  "projection": {"type": "mercator", "center": [134, -29]},
   "layer": [
     {
       "data": {
         "url": "https://raw.githubusercontent.com/cartdeco/Australia-json-data/master/aus25fgd_r.topojson",
-        "format": {
-          "type": "topojson",
-          "feature": "collection"
-        }
+        "format": {"type": "topojson", "feature": "collection"}
       },
       "mark": {
         "type": "geoshape",
-        "fill": "#F0F2F4",
-        "stroke": "#CBD5DF",
-        "strokeWidth": 0.48
+        "fill": "#EEF1F3",
+        "stroke": "#C5D0D8",
+        "strokeWidth": 0.6
       }
     },
     {
-      "mark": {
-        "type": "circle",
-        "filled": true,
-        "opacity": 0.94
-      },
-      "encoding": {
-        "longitude": {
-          "field": "longitude",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "latitude",
-          "type": "quantitative"
-        },
-        "size": {
-          "field": "share_pct",
-          "type": "quantitative",
-          "title": "Leading station share (%)",
-          "scale": {
-            "type": "linear",
-            "domain": [
-              12,
-              18
-            ],
-            "range": [
-              750,
-              8200
-            ],
-            "zero": false
-          },
-          "legend": {
-            "orient": "right",
-            "title": "Leader share (12–18%)",
-            "values": [
-              12,
-              14,
-              16,
-              18
-            ],
-            "format": ".0f",
-            "symbolFillColor": "#DF8C79",
-            "symbolStrokeColor": "#FFFFFF"
+      "data": {
+        "url": "data/metro_station_share_2026.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "survey": "number",
+            "share": "number",
+            "latitude": "number",
+            "longitude": "number"
           }
+        }
+      },
+      "transform": [
+        {"filter": "datum.survey == 5"},
+        {
+          "window": [
+            {"op": "row_number", "as": "position"},
+            {"op": "lead", "field": "share", "as": "runner_up_share"},
+            {"op": "lead", "field": "station", "as": "runner_up"}
+          ],
+          "groupby": ["market"],
+          "sort": [
+            {"field": "share", "order": "descending"}
+          ]
         },
-        "color": {
-          "field": "share_pct",
-          "type": "quantitative",
-          "legend": null,
-          "scale": {
-            "domain": [
-              12,
-              18
-            ],
-            "range": [
-              "#F6BDA8",
-              "#B94F43"
+        {"filter": "datum.position == 1"},
+        {
+          "calculate": "round((datum.share - datum.runner_up_share) * 10) / 10",
+          "as": "lead_points"
+        },
+        {
+          "calculate": "datum.market + '\\n+' + datum.lead_points + ' pts lead'",
+          "as": "map_label"
+        },
+        {
+          "calculate": "datum.market == 'Perth' ? datum.longitude - 8.5 : datum.market == 'Sydney' || datum.market == 'Brisbane' ? datum.longitude + 6.5 : datum.longitude",
+          "as": "label_lon"
+        },
+        {
+          "calculate": "datum.market == 'Adelaide' || datum.market == 'Melbourne' ? datum.latitude - 4.4 : datum.latitude",
+          "as": "label_lat"
+        }
+      ],
+      "layer": [
+        {
+          "mark": {"type": "circle", "opacity": 0.9, "cursor": "pointer"},
+          "encoding": {
+            "longitude": {"field": "longitude", "type": "quantitative"},
+            "latitude": {"field": "latitude", "type": "quantitative"},
+            "size": {
+              "field": "lead_points",
+              "type": "quantitative",
+              "title": "Lead over No. 2 (points)",
+              "scale": {"domain": [0, 6], "range": [0, 3600]},
+              "legend": {
+                "values": [1, 3, 5],
+                "orient": "bottom",
+                "direction": "horizontal",
+                "symbolFillColor": "#C9D3DA",
+                "symbolStrokeColor": "#5C7182"
+              }
+            },
+            "color": {
+              "field": "program_format",
+              "type": "nominal",
+              "title": "Leader's program type",
+              "scale": {
+                "domain": [
+                  "Commercial music",
+                  "ABC music",
+                  "Commercial talk & news",
+                  "ABC talk & news",
+                  "Sport"
+                ],
+                "range": ["#E47B5C", "#F2B8A0", "#2F5D8A", "#7FA3C7", "#E2B33C"]
+              },
+              "legend": {
+                "orient": "bottom",
+                "direction": "horizontal",
+                "symbolSize": 200,
+                "values": ["Commercial music", "Commercial talk & news"]
+              }
+            },
+            "stroke": {
+              "condition": {"test": "datum.market == SelectedMarket", "value": "#132D43"},
+              "value": "#FFFFFF"
+            },
+            "strokeWidth": {
+              "condition": {"test": "datum.market == SelectedMarket", "value": 4},
+              "value": 1.5
+            },
+            "tooltip": [
+              {"field": "market", "title": "City"},
+              {"field": "station", "title": "No. 1 station"},
+              {"field": "program_format", "title": "Program type"},
+              {"field": "share", "type": "quantitative", "title": "No. 1 share (%)"},
+              {"field": "runner_up", "title": "No. 2 station"},
+              {
+                "field": "runner_up_share",
+                "type": "quantitative",
+                "title": "No. 2 share (%)"
+              },
+              {"field": "lead_points", "type": "quantitative", "title": "Lead (points)"}
             ]
           }
         },
-        "stroke": {
-          "condition": {
-            "test": "datum.market == SelectedMarket",
-            "value": "#153B4D"
+        {
+          "mark": {
+            "type": "text",
+            "fontSize": 14,
+            "fontWeight": "bold",
+            "lineBreak": "\n",
+            "lineHeight": 17,
+            "color": "#1F3545"
           },
-          "value": "#FFFFFF"
-        },
-        "strokeWidth": {
-          "condition": {
-            "test": "datum.market == SelectedMarket",
-            "value": 3.1
-          },
-          "value": 1.6
-        },
-        "tooltip": [
-          {
-            "field": "market",
-            "type": "nominal",
-            "title": "Market"
-          },
-          {
-            "field": "station",
-            "type": "nominal",
-            "title": "Leading station"
-          },
-          {
-            "field": "share_pct",
-            "type": "quantitative",
-            "title": "Radio share (%)",
-            "format": ".1f"
-          },
-          {
-            "field": "survey",
-            "type": "nominal",
-            "title": "Source survey"
+          "encoding": {
+            "longitude": {"field": "label_lon", "type": "quantitative"},
+            "latitude": {"field": "label_lat", "type": "quantitative"},
+            "text": {"field": "map_label"},
+            "opacity": {
+              "condition": {"test": "datum.market == SelectedMarket", "value": 1},
+              "value": 0.75
+            }
           }
-        ]
-      }
-    },
-    {
-      "transform": [
-        {
-          "filter": "datum.market == 'Perth'"
         }
-      ],
-      "mark": {
-        "type": "text",
-        "dx": 0,
-        "dy": 68,
-        "align": "center",
-        "baseline": "middle",
-        "fontSize": 15,
-        "fontWeight": "bold",
-        "color": "#1F3545"
-      },
-      "encoding": {
-        "longitude": {
-          "field": "longitude",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "latitude",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "label",
-          "type": "nominal"
-        }
-      }
-    },
-    {
-      "transform": [
-        {
-          "filter": "datum.market == 'Adelaide'"
-        }
-      ],
-      "mark": {
-        "type": "text",
-        "dx": -18,
-        "dy": 62,
-        "align": "center",
-        "baseline": "middle",
-        "fontSize": 15,
-        "fontWeight": "bold",
-        "color": "#1F3545"
-      },
-      "encoding": {
-        "longitude": {
-          "field": "longitude",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "latitude",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "label",
-          "type": "nominal"
-        }
-      }
-    },
-    {
-      "transform": [
-        {
-          "filter": "datum.market == 'Melbourne'"
-        }
-      ],
-      "mark": {
-        "type": "text",
-        "dx": 28,
-        "dy": 66,
-        "align": "center",
-        "baseline": "middle",
-        "fontSize": 15,
-        "fontWeight": "bold",
-        "color": "#1F3545"
-      },
-      "encoding": {
-        "longitude": {
-          "field": "longitude",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "latitude",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "label",
-          "type": "nominal"
-        }
-      }
-    },
-    {
-      "transform": [
-        {
-          "filter": "datum.market == 'Sydney'"
-        }
-      ],
-      "mark": {
-        "type": "text",
-        "dx": 34,
-        "dy": -55,
-        "align": "center",
-        "baseline": "middle",
-        "fontSize": 15,
-        "fontWeight": "bold",
-        "color": "#1F3545"
-      },
-      "encoding": {
-        "longitude": {
-          "field": "longitude",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "latitude",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "label",
-          "type": "nominal"
-        }
-      }
-    },
-    {
-      "transform": [
-        {
-          "filter": "datum.market == 'Brisbane'"
-        }
-      ],
-      "mark": {
-        "type": "text",
-        "dx": 38,
-        "dy": -40,
-        "align": "center",
-        "baseline": "middle",
-        "fontSize": 15,
-        "fontWeight": "bold",
-        "color": "#1F3545"
-      },
-      "encoding": {
-        "longitude": {
-          "field": "longitude",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "latitude",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "label",
-          "type": "nominal"
-        }
-      }
+      ]
     }
   ],
   "config": {
-    "view": {
-      "stroke": null
-    }
-  },
-  "params": [
-    {
-      "name": "SelectedMarket",
-      "value": "Melbourne"
-    }
-  ],
-  "transform": [
-    {
-      "calculate": "datum.market + '  ' + format(datum.share_pct, '.1f') + '%'",
-      "as": "label"
-    }
-  ]
+    "view": {"stroke": null}
+  }
 }

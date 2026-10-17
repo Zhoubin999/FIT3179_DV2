@@ -1,112 +1,97 @@
-// FIT3179 DV2: load Vega-Lite charts and keep the five-city market selection in sync.
-// Charts outside C08/C09/C12 are deliberately unaffected by this choice.
-const chartNodes = [...document.querySelectorAll('[data-spec]')];
-const marketSelect = document.querySelector('#global-market');
-const marketCharts = new Set(['c08', 'c09', 'c12']);
-const validMarkets = ['Melbourne', 'Sydney', 'Brisbane', 'Adelaide', 'Perth'];
-const chartViews = new Map();
-let selectedMarket = 'Melbourne';
+// FIT3179 DV2 - Australian Radio in the Digital Age
+// Embeds every Vega-Lite chart and keeps the four "local market" charts in sync.
 
-const visualConfig = {
-  background: null,
-  axis: {
-    labelFont: 'DM Sans, Arial', titleFont: 'DM Sans, Arial',
-    labelColor: '#526475', titleColor: '#4B6171',
-    domainColor: '#ACB9C3', tickColor: '#ACB9C3', gridColor: '#E8ECEF',
-    labelFontSize: 12, titleFontSize: 13
+// Shared look for every chart (fonts, colours and text sizes)
+var chartConfig = {
+  "background": null,
+  "font": "DM Sans, Arial, sans-serif",
+  "axis": {
+    "labelFontSize": 13,
+    "titleFontSize": 14,
+    "titleFontWeight": 600,
+    "labelColor": "#3E5263",
+    "titleColor": "#3E5263",
+    "domainColor": "#ACB9C3",
+    "tickColor": "#ACB9C3",
+    "gridColor": "#E8ECEF"
   },
-  header: {labelFont: 'DM Sans, Arial', titleFont: 'DM Sans, Arial'},
-  legend: {
-    labelFont: 'DM Sans, Arial', titleFont: 'DM Sans, Arial',
-    labelColor: '#4D6071', labelFontSize: 12, titleFontSize: 12
+  "legend": {
+    "labelFontSize": 13,
+    "titleFontSize": 13,
+    "labelColor": "#3E5263",
+    "titleColor": "#3E5263",
+    "labelLimit": 260
   },
-  title: {
-    font: 'Outfit, Arial', fontWeight: 600, fontSize: 16,
-    subtitleFont: 'DM Sans, Arial', subtitleFontSize: 12,
-    color: '#23384A', subtitleColor: '#657988',
-    anchor: 'start', offset: 12
-  },
-  view: {stroke: null}
+  "header": {"labelFontSize": 14, "labelColor": "#1F3545"},
+  "view": {"stroke": null}
 };
 
-function adjustChart(spec, container) {
-  const chartWidth = container.clientWidth || 600;
-  const copy = structuredClone(spec);
-  const reserve = container.closest('.full') ? 105 : 125;
-  const target = Math.max(280, Math.min(Number(spec.width) || 700, chartWidth - reserve));
+var embedOptions = {"actions": false, "renderer": "svg", "config": chartConfig};
 
-  if (copy.vconcat) {
-    copy.width = target;
-    copy.vconcat.forEach(chart => { chart.width = target; });
-  } else if (!copy.facet) {
-    copy.width = target;
-  }
-  return copy;
+
+// ---------- Chapter 1: the big shift ----------
+vegaEmbed('#c01', "js/chart01_listening_trend.vg.json", embedOptions).catch(console.error);
+vegaEmbed('#c02', "js/chart02_streaming_services_heatmap.vg.json", embedOptions).catch(console.error);
+
+// ---------- Chapter 2: who listens ----------
+vegaEmbed('#c04', "js/chart04_radio_age_dumbbell.vg.json", embedOptions).catch(console.error);
+vegaEmbed('#c03', "js/chart03_podcast_overlap_upset.vg.json", embedOptions).catch(console.error);
+vegaEmbed('#c05', "js/chart05_metro_regional_diverging.vg.json", embedOptions).catch(console.error);
+
+// ---------- Chapter 3: new ways to listen, and the transmitters behind radio ----------
+vegaEmbed('#c06', "js/chart06_in_car_waterfall.vg.json", embedOptions).catch(console.error);
+vegaEmbed('#c07', "js/chart07_spotify_account_mix.vg.json", embedOptions).catch(console.error);
+vegaEmbed('#c10', "js/chart10_dab_locations_map.vg.json", embedOptions).catch(console.error);
+vegaEmbed('#c11', "js/chart11_fm_retransmission_choropleth.vg.json", embedOptions).catch(console.error);
+
+
+// ---------- Chapter 4: local markets (four linked charts) ----------
+// Each of these specs has a parameter called "SelectedMarket".
+// Changing the city here updates that parameter in all four charts at once.
+var marketViews = [];
+var selectedMarket = "Melbourne";
+var cityButtons = document.querySelectorAll('.city-button');
+var marketName = document.querySelectorAll('.market-name');
+
+function showMarket(market) {
+  selectedMarket = market;
+
+  // update every linked chart
+  marketViews.forEach(function (view) {
+    view.signal('SelectedMarket', market).runAsync();
+  });
+
+  // update the city buttons and any text that names the city
+  cityButtons.forEach(function (button) {
+    button.classList.toggle('active', button.dataset.market === market);
+  });
+  marketName.forEach(function (span) {
+    span.textContent = market;
+  });
 }
 
-function changeMarket(nextMarket) {
-  // This is a single-choice selection. Empty and unsupported markets are ignored.
-  if (!validMarkets.includes(nextMarket)) return;
-  selectedMarket = nextMarket;
-  if (marketSelect) marketSelect.value = nextMarket;
+function embedMarketChart(elementId, specUrl) {
+  vegaEmbed(elementId, specUrl, embedOptions).then(function (result) {
+    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+    marketViews.push(result.view);
+    result.view.signal('SelectedMarket', selectedMarket).runAsync();
 
-  for (const [id, view] of chartViews.entries()) {
-    if (!marketCharts.has(id)) continue;
-    try {
-      view.signal('SelectedMarket', nextMarket).runAsync().catch(console.error);
-    } catch (error) {
-      console.error(`Could not synchronise ${id}`, error);
-    }
-  }
-}
-
-if (marketSelect) {
-  marketSelect.addEventListener('change', () => changeMarket(marketSelect.value));
-}
-
-async function renderChart(el) {
-  try {
-    const response = await fetch(el.dataset.spec, {cache: 'no-cache'});
-    if (!response.ok) throw new Error(`Could not load ${el.dataset.spec} (${response.status})`);
-    const spec = await response.json();
-    el.innerHTML = '';
-
-    const result = await vegaEmbed(el, adjustChart(spec, el), {
-      actions: false, renderer: 'svg', config: visualConfig
+    // clicking a city's mark (bar or circle) selects that city everywhere
+    result.view.addEventListener('click', function (event, item) {
+      if (item && item.datum && item.datum.market) {
+        showMarket(item.datum.market);
+      }
     });
-
-    if (marketCharts.has(el.id)) {
-      chartViews.set(el.id, result.view);
-      result.view.signal('SelectedMarket', selectedMarket);
-      await result.view.runAsync();
-
-      // Clicking an actual market mark updates the common selection.
-      // Background/legend clicks do nothing; data for other markets remain visible.
-      result.view.addEventListener('click', (_event, item) => {
-        const datum = item?.datum;
-        const market = datum?.market || datum?.geography;
-        if (validMarkets.includes(market)) changeMarket(market);
-      });
-    }
-  } catch (error) {
-    console.error('Chart rendering failed', el.dataset.spec, error);
-    const status = document.createElement('div');
-    status.className = 'load-status failure';
-    status.textContent = `Chart could not load: ${error.message}`;
-    el.replaceChildren(status);
-  }
+  }).catch(console.error);
 }
 
-// Progressive rendering avoids loading all twelve figures simultaneously.
-if ('IntersectionObserver' in window) {
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      obs.unobserve(entry.target);
-      renderChart(entry.target);
-    });
-  }, {rootMargin: '450px 0px'});
-  chartNodes.forEach(node => observer.observe(node));
-} else {
-  chartNodes.forEach(renderChart);
-}
+embedMarketChart('#c08', "js/chart08_market_station_distribution.vg.json");
+embedMarketChart('#c12', "js/chart12_market_leaders_symbol_map.vg.json");
+embedMarketChart('#c13', "js/chart13_market_station_shares.vg.json");
+embedMarketChart('#c09', "js/chart09_station_rank_bump.vg.json");
+
+cityButtons.forEach(function (button) {
+  button.addEventListener('click', function () {
+    showMarket(button.dataset.market);
+  });
+});

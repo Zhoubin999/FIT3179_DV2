@@ -1,175 +1,139 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 800,
-  "height": 480,
-  "projection": {
-    "type": "mercator",
-    "center": [
-      134,
-      -27.5
-    ],
-    "scale": 590
-  },
-  "config": {
-    "view": {
-      "stroke": null
+  "width": "container",
+  "height": 520,
+  "params": [
+    {
+      "name": "Measure_selection",
+      "value": "per100k",
+      "bind": {
+        "input": "select",
+        "options": ["per100k", "retrans", "dab"],
+        "labels": [
+          "Radio transmitter sites per 100,000 people",
+          "Share of FM transmitters that relay another station (%)",
+          "Share of radio sites that broadcast DAB+ (%)"
+        ],
+        "name": "Colour the map by: "
+      }
     }
-  },
+  ],
+  "projection": {"type": "mercator", "center": [134, -28.5]},
   "layer": [
     {
-      "mark": {
-        "type": "geoshape",
-        "stroke": "#FFFFFF",
-        "strokeWidth": 0.85
-      },
-      "encoding": {
-        "color": {
-          "field": "fm_retransmission_share_pct",
-          "type": "quantitative",
-          "title": "FM retransmission (%)",
-          "scale": {
-            "domain": [
-              0,
-              70
-            ],
-            "range": [
-              "#F0F4F2",
-              "#006B65"
-            ]
-          },
-          "legend": {
-            "orient": "right",
-            "gradientLength": 180,
-            "values": [
-              0,
-              10,
-              20,
-              30,
-              40,
-              50,
-              60,
-              70
-            ]
-          }
-        },
-        "tooltip": [
-          {
-            "field": "state_name",
-            "title": "State/Territory"
-          },
-          {
-            "field": "fm_retransmission_share_pct",
-            "title": "Share (%)",
-            "format": ".1f"
-          },
-          {
-            "field": "fm_retransmission_total",
-            "title": "Retransmission records"
-          },
-          {
-            "field": "fm_issued_unique_records",
-            "title": "All issued FM records"
-          }
-        ]
-      },
       "data": {
         "url": "https://raw.githubusercontent.com/cartdeco/Australia-json-data/master/aus25fgd_r.topojson",
-        "format": {
-          "type": "topojson",
-          "feature": "collection"
-        }
+        "format": {"type": "topojson", "feature": "collection"}
       },
       "transform": [
         {
-          "calculate": "datum.properties.STATE == '9' ? 'WA' : datum.properties.STATE == '5' ? 'QLD' : datum.properties.STATE == '4' ? 'NT' : datum.properties.STATE == '6' ? 'SA' : datum.properties.STATE == '3' ? 'NSW' : datum.properties.STATE == '8' ? 'VIC' : datum.properties.STATE == '7' ? 'TAS' : datum.properties.STATE == '1' ? 'ACT' : 'Other'",
+          "calculate": "datum.properties.STATE == '1' ? 'ACT' : datum.properties.STATE == '3' ? 'NSW' : datum.properties.STATE == '4' ? 'NT' : datum.properties.STATE == '5' ? 'QLD' : datum.properties.STATE == '6' ? 'SA' : datum.properties.STATE == '7' ? 'TAS' : datum.properties.STATE == '8' ? 'VIC' : datum.properties.STATE == '9' ? 'WA' : 'Other'",
           "as": "state"
         },
         {
           "lookup": "state",
           "from": {
-            "data": {
-              "url": "data/c11_fm_retransmission_by_state_2026.csv",
-              "format": {
-                "type": "csv",
-                "parse": {
-                  "fm_retransmission_share_pct": "number"
-                }
-              }
-            },
+            "data": {"url": "data/state_radio_infrastructure_2026.csv"},
             "key": "state",
             "fields": [
               "state_name",
-              "fm_retransmission_share_pct",
-              "fm_retransmission_total",
-              "fm_issued_unique_records"
+              "population",
+              "all_radio_sites",
+              "dab_sites",
+              "radio_sites_per_100k",
+              "fm_records",
+              "fm_retransmission_records",
+              "fm_retransmission_pct",
+              "dab_share_of_sites_pct"
             ]
           }
+        },
+        {
+          "calculate": "Measure_selection == 'per100k' ? toNumber(datum.radio_sites_per_100k) : Measure_selection == 'retrans' ? toNumber(datum.fm_retransmission_pct) : toNumber(datum.dab_share_of_sites_pct)",
+          "as": "shown_value"
         }
-      ]
+      ],
+      "mark": {"type": "geoshape", "stroke": "#FFFFFF", "strokeWidth": 1},
+      "encoding": {
+        "color": {
+          "field": "shown_value",
+          "type": "quantitative",
+          "title": "Value of the selected measure",
+          "scale": {"type": "sqrt", "range": ["#EAF4F1", "#0A6B66"], "zero": true},
+          "legend": {
+            "orient": "bottom-left",
+            "direction": "horizontal",
+            "gradientLength": 240,
+            "titleLimit": 300
+          }
+        },
+        "tooltip": [
+          {"field": "state_name", "title": "State / territory"},
+          {
+            "field": "population",
+            "type": "quantitative",
+            "title": "Population (Mar 2026)",
+            "format": ","
+          },
+          {
+            "field": "all_radio_sites",
+            "type": "quantitative",
+            "title": "Radio transmitter sites"
+          },
+          {
+            "field": "radio_sites_per_100k",
+            "type": "quantitative",
+            "title": "Sites per 100,000 people"
+          },
+          {
+            "field": "fm_retransmission_records",
+            "type": "quantitative",
+            "title": "FM relay transmitters"
+          },
+          {"field": "fm_records", "type": "quantitative", "title": "All FM transmitters"},
+          {"field": "dab_sites", "type": "quantitative", "title": "DAB+ sites"}
+        ]
+      }
     },
     {
       "data": {
-        "url": "data/c11_fm_retransmission_by_state_2026.csv",
+        "url": "data/state_radio_infrastructure_2026.csv",
         "format": {
           "type": "csv",
-          "parse": {
-            "fm_retransmission_share_pct": "number"
-          }
+          "parse": {"label_lon": "number", "label_lat": "number"}
         }
       },
       "transform": [
         {
-          "calculate": "datum.state == 'WA' ? 121 : datum.state == 'NT' ? 134 : datum.state == 'QLD' ? 145 : datum.state == 'SA' ? 135 : datum.state == 'NSW' ? 146 : datum.state == 'VIC' ? 144.2 : datum.state == 'TAS' ? 146.8 : 149.3",
-          "as": "label_lon"
+          "calculate": "Measure_selection == 'per100k' ? toNumber(datum.radio_sites_per_100k) : Measure_selection == 'retrans' ? toNumber(datum.fm_retransmission_pct) : toNumber(datum.dab_share_of_sites_pct)",
+          "as": "shown_value"
         },
         {
-          "calculate": "datum.state == 'WA' ? -25 : datum.state == 'NT' ? -19.5 : datum.state == 'QLD' ? -23 : datum.state == 'SA' ? -29.6 : datum.state == 'NSW' ? -32.8 : datum.state == 'VIC' ? -37.3 : datum.state == 'TAS' ? -42 : -34.9",
-          "as": "label_lat"
+          "calculate": "datum.state + ': ' + format(datum.shown_value, '.1f') + (Measure_selection == 'per100k' ? '' : '%')",
+          "as": "state_label"
         },
         {
-          "calculate": "datum.state + ' ' + format(datum.fm_retransmission_share_pct,'.1f') + '%'",
-          "as": "label"
+          "joinaggregate": [
+            {"op": "max", "field": "shown_value", "as": "max_value"}
+          ]
         }
       ],
-      "mark": {
-        "type": "text",
-        "fontSize": 13,
-        "fontWeight": "bold",
-        "align": "center",
-        "baseline": "middle"
-      },
+      "mark": {"type": "text", "fontSize": 15, "fontWeight": "bold", "align": "center"},
       "encoding": {
-        "longitude": {
-          "field": "label_lon",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "label_lat",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "label",
-          "type": "nominal"
-        },
+        "longitude": {"field": "label_lon", "type": "quantitative"},
+        "latitude": {"field": "label_lat", "type": "quantitative"},
+        "text": {"field": "state_label"},
         "color": {
           "condition": {
-            "test": "datum.fm_retransmission_share_pct >= 40",
+            "test": "datum.shown_value > datum.max_value * 0.45",
             "value": "#FFFFFF"
           },
           "value": "#17374A"
-        },
-        "tooltip": [
-          {
-            "field": "state_name",
-            "title": "State / territory"
-          },
-          {
-            "field": "fm_retransmission_share_pct",
-            "title": "FM retransmission (%)",
-            "format": ".1f"
-          }
-        ]
+        }
       }
     }
-  ]
+  ],
+  "config": {
+    "view": {"stroke": null}
+  }
 }

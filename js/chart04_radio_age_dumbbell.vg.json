@@ -1,29 +1,17 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 620,
+  "width": "container",
   "height": 250,
   "data": {
     "url": "data/c04_radio_age_comparison_2026.csv",
     "format": {
       "type": "csv",
-      "parse": {
-        "share_pct": "number"
-      }
+      "parse": {"share_pct": "number"}
     }
   },
   "transform": [
-    {
-      "pivot": "audience",
-      "value": "share_pct",
-      "groupby": [
-        "age_group"
-      ],
-      "op": "max"
-    },
-    {
-      "calculate": "datum['Australia overall'] - datum['Regional Australia']",
-      "as": "gap"
-    },
+    {"pivot": "audience", "value": "share_pct", "groupby": ["age_group"], "op": "max"},
+    {"calculate": "datum['Australia overall'] - datum['Regional Australia']", "as": "gap"},
     {
       "calculate": "datum.gap == 0 ? 'Same reach: 80%' : (format(datum.gap,'.0f') + ' percentage-point gap')",
       "as": "gap_label"
@@ -33,22 +21,10 @@
     "x": {
       "field": "Australia overall",
       "type": "quantitative",
-      "scale": {
-        "domain": [
-          0,
-          100
-        ]
-      },
+      "scale": {"domain": [0, 100]},
       "axis": {
         "title": "Weekly radio reach (%)",
-        "values": [
-          0,
-          20,
-          40,
-          60,
-          80,
-          100
-        ],
+        "values": [0, 20, 40, 60, 80, 100],
         "grid": true
       }
     },
@@ -56,14 +32,8 @@
       "field": "age_group",
       "type": "nominal",
       "title": "Age",
-      "sort": [
-        "10–24",
-        "25–54",
-        "55+"
-      ],
-      "axis": {
-        "labelFontSize": 13
-      }
+      "sort": ["10–24", "25–54", "55+"],
+      "axis": {"labelFontSize": 14}
     }
   },
   "layer": [
@@ -75,30 +45,13 @@
         "strokeCap": "round"
       },
       "encoding": {
-        "x": {
-          "field": "Regional Australia",
-          "type": "quantitative"
-        },
-        "x2": {
-          "field": "Australia overall"
-        },
+        "x": {"field": "Regional Australia", "type": "quantitative"},
+        "x2": {"field": "Australia overall"},
         "tooltip": [
-          {
-            "field": "age_group",
-            "title": "Age"
-          },
-          {
-            "field": "Australia overall",
-            "title": "Australia overall (%)"
-          },
-          {
-            "field": "Regional Australia",
-            "title": "Regional Australia (%)"
-          },
-          {
-            "field": "gap",
-            "title": "Gap (percentage points)"
-          }
+          {"field": "age_group", "title": "Age"},
+          {"field": "Australia overall", "title": "Australia overall (%)"},
+          {"field": "Regional Australia", "title": "Regional Australia (%)"},
+          {"field": "gap", "title": "Gap (percentage points)"}
         ]
       }
     },
@@ -112,10 +65,7 @@
         "strokeWidth": 1.5
       },
       "encoding": {
-        "x": {
-          "field": "Australia overall",
-          "type": "quantitative"
-        }
+        "x": {"field": "Australia overall", "type": "quantitative"}
       }
     },
     {
@@ -128,96 +78,65 @@
         "strokeWidth": 1.5
       },
       "encoding": {
-        "x": {
-          "field": "Regional Australia",
-          "type": "quantitative"
-        }
+        "x": {"field": "Regional Australia", "type": "quantitative"}
       }
     },
     {
       "transform": [
-        {
-          "filter": "datum.age_group != '55+'"
-        }
+        {"filter": "datum.age_group != '55+'"}
       ],
       "mark": {
         "type": "text",
         "dx": -12,
         "dy": -12,
         "align": "right",
-        "fontSize": 12,
+        "fontSize": 13,
         "fontWeight": "bold",
         "color": "#53667A"
       },
       "encoding": {
-        "x": {
-          "field": "Australia overall",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "Australia overall",
-          "type": "quantitative",
-          "format": ".0f"
-        }
+        "x": {"field": "Australia overall", "type": "quantitative"},
+        "text": {"field": "Australia overall", "type": "quantitative", "format": ".0f"}
       }
     },
     {
       "transform": [
-        {
-          "filter": "datum.age_group != '55+'"
-        }
+        {"filter": "datum.age_group != '55+'"}
       ],
       "mark": {
         "type": "text",
         "dx": 10,
         "dy": 11,
         "align": "left",
-        "fontSize": 12,
+        "fontSize": 13,
         "fontWeight": "bold",
         "color": "#087F79"
       },
       "encoding": {
-        "x": {
-          "field": "Regional Australia",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "Regional Australia",
-          "type": "quantitative",
-          "format": ".0f"
-        }
+        "x": {"field": "Regional Australia", "type": "quantitative"},
+        "text": {"field": "Regional Australia", "type": "quantitative", "format": ".0f"}
       }
     },
     {
       "transform": [
-        {
-          "filter": "datum.age_group == '55+'"
-        }
+        {"filter": "datum.age_group == '55+'"}
       ],
       "mark": {
         "type": "text",
-        "dx": 14,
-        "dy": -12,
-        "align": "left",
-        "fontSize": 12,
+        "dx": -14,
+        "dy": -14,
+        "align": "right",
+        "fontSize": 13,
         "fontWeight": "bold",
         "color": "#243D50"
       },
       "encoding": {
-        "x": {
-          "field": "Australia overall",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "gap_label",
-          "type": "nominal"
-        }
+        "x": {"field": "Australia overall", "type": "quantitative"},
+        "text": {"field": "gap_label", "type": "nominal"}
       }
     }
   ],
   "config": {
-    "view": {
-      "stroke": null
-    }
+    "view": {"stroke": null}
   }
 }

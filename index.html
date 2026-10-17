@@ -1,477 +1,353 @@
 <!DOCTYPE html>
 <html lang="en">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <meta content="Australian radio in the digital age &mdash; FIT3179 data story." name="description"/>
-  <title>
-   Australian Radio | FIT3179 DV2
-  </title>
-  <link href="css/style.css" rel="stylesheet"/>
- </head>
- <body>
-  <a class="skip" href="#main">
-   Skip to content
-  </a>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="How Australians listen to radio, streaming and podcasts in 2026 - a FIT3179 data visualisation by Zhoubin Li.">
+  <meta name="author" content="Zhoubin Li">
+  <title>Australian Radio in the Digital Age | Zhoubin Li</title>
+
+  <!-- Import Vega & Vega-Lite -->
+  <script src="https://cdn.jsdelivr.net/npm/vega@5.30.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.21.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.26.0"></script>
+
+  <!-- CSS file -->
+  <link rel="stylesheet" type="text/css" href="css/style.css" media="all">
+</head>
+
+<body>
+
+  <!-- ===== Top navigation ===== -->
   <header class="topnav">
-   <div class="shell navinner">
-    <a class="brand" href="#top">
-     <span class="pulse">
-      ◖▌◗
-     </span>
-     AU RADIO / DV2
-    </a>
-    <nav class="links">
-     <a href="#landscape">
-      01 Landscape
-     </a>
-     <a href="#divide">
-      02 Digital divide
-     </a>
-     <a href="#adaptation">
-      03 Adaptation
-     </a>
-     <a href="#geography">
-      04 Local radio
-     </a>
-    </nav>
-   </div>
+    <div class="shell navinner">
+      <a class="brand" href="#top">Australian Radio in the Digital Age</a>
+      <nav class="links">
+        <a href="#shift">1 The big shift</a>
+        <a href="#who">2 Who listens</a>
+        <a href="#tech">3 Technology</a>
+        <a href="#local">4 Local stations</a>
+        <a href="#sources">Sources</a>
+      </nav>
+    </div>
   </header>
+
+  <!-- ===== Hero ===== -->
   <div class="hero" id="top">
-   <div class="shell hero-inner">
-    <div class="eyebrow">
-     FIT3179 &middot; DATA VISUALISATION 2 &middot; 2026
-    </div>
-    <h1>
-     Australian radio in
-     <br/>
-     the
-     <em>
-      digital age.
-     </em>
-    </h1>
-    <p class="hero-desc">
-     Replaced, reinvented, or left behind? A data story about how streaming, podcasts and broadcast radio are changing&mdash;and why the experience differs across Australia.
-    </p>
-    <div class="hero-stats">
-     <div class="stat">
-      <strong class="blue">
-       81%
-      </strong>
-      <p>
-       Weekly streaming reach, 2026
+    <div class="shell hero-inner">
+      <p class="eyebrow">FIT3179 Data Visualisation 2 &middot; 2026</p>
+      <h1>Australian radio in the <em>digital age</em></h1>
+      <p class="hero-desc">
+        Streaming and podcasts have grown fast. Has radio been replaced, or has it changed shape?
+        This page follows who listens, how they listen, and what they choose to hear.
       </p>
-     </div>
-     <div class="stat">
-      <strong class="orange">
-       77%
-      </strong>
-      <p>
-       Weekly radio reach, 2026
-      </p>
-     </div>
-     <div class="stat">
-      <strong>
-       12
-      </strong>
-      <p>
-       percentage-point CarPlay / Android Auto gap in 2026
-      </p>
-     </div>
+      <p class="byline">By <strong>Zhoubin Li</strong> &middot; Published 18 October 2026</p>
+
+      <div class="hero-stats">
+        <div class="stat">
+          <strong class="orange">81%</strong>
+          <p>of Australians 10+ streamed audio in the past week (2026)</p>
+        </div>
+        <div class="stat">
+          <strong class="blue">77%</strong>
+          <p>still listened to radio in the past week (2026)</p>
+        </div>
+        <div class="stat">
+          <strong>42%</strong>
+          <p>listened to digital (DAB+) radio, up from 16% in 2018</p>
+        </div>
+      </div>
     </div>
-    <div class="meta-line">
-     Source: Infinite Dial Australia 2026 &middot; Population 10+ except in-car metric (18+ car travellers) &middot; 2026 edition
-    </div>
-    <p class="author-line">
-     Created by Zhoubin Li &middot; 12 October 2026
-    </p>
-   </div>
   </div>
+
   <main class="shell" id="main">
-   <div class="page-intro">
-    <div>
-     <span class="eyebrow">
-      THE CENTRAL QUESTION
-     </span>
-     <h2>
-      Digital listening grows, but the transition isn't one-size-fits-all.
-     </h2>
-     <p>
-      Follow Australia's audio transformation from evolving listening habits to uneven technology uptake, local radio competition and geographic infrastructure differences. Each figure is a distinct piece of evidence, not a claim that streaming has replaced radio.
-     </p>
-    </div>
-    <div class="intro-aside">
-     <b>
-      Read the evidence carefully.
-     </b>
-     <br/>
-     Radio and streaming can overlap. &ldquo;Australia overall&rdquo; includes regional respondents. Different surveys use different populations and reference periods. No map here claims to measure actual reception coverage.
-    </div>
-   </div>
-   <p class="reading-key">
-    Reading key: DAB+ means Digital Audio Broadcasting (digital terrestrial radio); FM is frequency-modulated radio; pp means percentage points (the arithmetic difference between two percentages).
-   </p>
-   <section class="chapter" id="landscape">
-    <div class="chapter-heading">
-     <div class="chapter-no">
-      01
-     </div>
-     <div>
-      <span class="eyebrow">
-       CHAPTER 01
-      </span>
-      <h2>
-       What changed&mdash;and for whom?
-      </h2>
-      <p>
-       Streaming is growing without making radio disappear. Podcast habits overlap, while older and younger audiences show different radio reach.
-      </p>
-     </div>
-    </div>
-    <div class="chart-grid">
-     <article aria-labelledby="c01-heading" class="chart-card wide">
-      <h3 class="card-heading" id="c01-heading">
-       The big shift
-      </h3>
-      <p class="interpretation">
-       Radio weekly reach moved from 85% in 2017 to 77% in 2026; streaming audio moved from 46% to 81%. These are overlapping audiences, not competing market shares.
-      </p>
-      <p class="chart-context">
-       Weekly reach among Australians aged 10+, 2017&ndash;2026
-      </p>
-      <div aria-label="Data visualisation for The big shift" class="chart-wrap" data-spec="js/chart01_listening_trend.vg.json" id="c01" role="img">
-       <div class="load-status">
-        Loading chart&hellip;
-       </div>
+
+    <!-- ===== How to use + jargon buster ===== -->
+    <section class="guide-grid">
+      <div class="guide-box">
+        <h2>How to use this page</h2>
+        <ul class="how-list">
+          <li><span class="how-icon">&#9757;</span><span><b>Hover</b> over any line, bar, square or circle to see exact numbers.</span></li>
+          <li><span class="how-icon">&#9660;</span><span>Use the <b>drop-down menus</b> under some charts to change what they show.</span></li>
+          <li><span class="how-icon">&#9679;</span><span><b>Click a legend item</b> of the first chart to highlight that line. Click empty space to reset.</span></li>
+          <li><span class="how-icon">&#128279;</span><span>In Chapter 4, <b>pick a city</b> once and all four linked charts change together.</span></li>
+        </ul>
       </div>
-     </article>
-     <article aria-labelledby="c03-heading" class="chart-card">
-      <h3 class="card-heading" id="c03-heading">
-       Podcast now means more than listening
-      </h3>
-      <p class="interpretation">
-       Listening and watching podcasts overlap. Both equal-size panels represent 100% of their respective populations; the purple area is 7 percentage points lower regionally.
-      </p>
-      <p class="chart-insight">
-       <strong>
-        35% nationally vs 28% regionally
-       </strong>
-       listened to and watched podcasts &middot; 7 percentage-point difference
-      </p>
-      <p class="chart-context">
-       Equal-size 100% population panels, ages 10+, 2026; compare the purple overlap
-      </p>
-      <div aria-label="Podcast listening and viewing overlaps for Australian and regional audiences" class="chart-wrap" data-spec="js/chart03_podcast_overlap_upset.vg.json" id="c03" role="img">
-       <div class="load-status">
-        Loading chart&hellip;
-       </div>
+      <div class="guide-box glossary">
+        <h2>Jargon buster</h2>
+        <dl>
+          <dt>Weekly reach</dt>
+          <dd>The percentage of people who used something at least once in the past 7 days.</dd>
+          <dt>Share</dt>
+          <dd>Of all the time people spent listening to radio in a city, the percentage that went to one station.</dd>
+          <dt>Points</dt>
+          <dd>The simple difference between two percentages: 58% vs 50% is a gap of 8 points.</dd>
+          <dt>AM / FM</dt>
+          <dd>Traditional (analogue) radio, the kind every car radio can receive.</dd>
+          <dt>DAB+</dt>
+          <dd>Digital radio broadcast from towers. Clearer sound and more stations, but you need a DAB+ radio and a nearby transmitter.</dd>
+          <dt>Relay transmitter</dt>
+          <dd>A small transmitter that repeats a station from somewhere else so a far-away town can hear it (officially, a &ldquo;retransmission&rdquo;).</dd>
+        </dl>
       </div>
-     </article>
-     <article aria-labelledby="c04-heading" class="chart-card">
-      <h3 class="card-heading" id="c04-heading">
-       Radio is still widely used by older Australians
-      </h3>
-      <p class="interpretation">
-       Among people aged 55+, weekly radio reach was 80% both nationally and regionally in 2026. The largest national&ndash;regional gap was among ages 10&ndash;24 (10 percentage points).
-      </p>
-      <p class="chart-context">
-       Weekly radio listening, 2026: Australia overall versus Regional Australia
-      </p>
-      <div aria-label="Connected dot plot comparing weekly radio reach by age group, Australia overall versus Regional Australia" class="chart-wrap" data-spec="js/chart04_radio_age_dumbbell.vg.json" id="c04" role="img">
-       <div class="load-status">
-        Loading chart&hellip;
-       </div>
+    </section>
+
+
+    <!-- ===== Chapter 1 ===== -->
+    <section class="chapter" id="shift">
+      <div class="chapter-heading">
+        <div class="chapter-no">01</div>
+        <div>
+          <h2>The big shift: streaming caught up with radio</h2>
+          <p>Australians did not stop listening to radio. They added streaming and podcasts on top of it.</p>
+        </div>
       </div>
-     </article>
-    </div>
-   </section>
-   <section class="chapter" id="divide">
-    <div class="chapter-heading">
-     <div class="chapter-no">
-      02
-     </div>
-     <div>
-      <span class="eyebrow">
-       CHAPTER 02
-      </span>
-      <h2>
-       Different technologies, different geographies
-      </h2>
-      <p>
-       Online services differ in popularity, and metropolitan and regional areas use broadcasting technologies differently. DAB+ service locations provide geographic context.
-      </p>
-     </div>
-    </div>
-    <div class="chart-grid">
-     <article aria-labelledby="c02-heading" class="chart-card">
-      <h3 class="card-heading" id="c02-heading">
-       Growth is uneven
-      </h3>
-      <p class="interpretation">
-       Spotify was used weekly by 47% in 2026, while YouTube Music reached 29%. The major platforms are not changing at the same rate.
-      </p>
-      <p class="chart-context">
-       Weekly use among Australians aged 10+, 2024&ndash;2026
-      </p>
-      <div aria-label="Data visualisation for Growth is uneven" class="chart-wrap" data-spec="js/chart02_streaming_services_heatmap.vg.json" id="c02" role="img">
-       <div class="load-status">
-        Loading chart&hellip;
-       </div>
+
+      <div class="chart-grid">
+        <article class="chart-card wide">
+          <h3 class="card-heading">Streaming overtook radio in 2025, but radio is still heard by 3 in 4 people</h3>
+          <p class="interpretation">
+            Since 2017, weekly streaming rose from 46% to 81% and podcasts from 10% to 45%. Radio fell only slightly, from 85% to 77%.
+            Digital DAB+ radio grew from 16% (2018) to 42%, so radio is moving to new devices rather than disappearing.
+            The lines overlap because one person can do all of these in the same week.
+          </p>
+          <p class="try"><b>Try:</b> hover to compare every line in one year &middot; click a legend item to highlight it &middot; switch to <i>Regional Australia</i> in the menu below the chart.</p>
+          <div id="c01" class="chart-wrap"></div>
+          <p class="source-note">Source: <a href="https://cra.au/hubfs/Infinite%20Dial%202026-CRA.pdf" target="_blank" rel="noopener">Infinite Dial Australia 2026</a> and <a href="https://cra.au/hubfs/Infinite%20Dial%202026%20-%20REGIONAL%20Presentation_Final.pdf" target="_blank" rel="noopener">Regional edition</a>, people aged 10+.</p>
+        </article>
+
+        <article class="chart-card wide">
+          <h3 class="card-heading">Spotify is twice as popular as YouTube Music, and growth has stalled</h3>
+          <p class="interpretation">
+            Spotify is used weekly by almost half of Australians (47%). Apple Music and Amazon Music grew fastest in 2025, then stayed flat in 2026.
+          </p>
+          <p class="try"><b>Try:</b> hover a square to see the change from the year before.</p>
+          <div id="c02" class="chart-wrap narrow"></div>
+          <p class="source-note">Source: <a href="https://cra.au/hubfs/Infinite%20Dial%202026-CRA.pdf" target="_blank" rel="noopener">Infinite Dial Australia 2026</a>, people aged 10+.</p>
+        </article>
       </div>
-     </article>
-     <article aria-labelledby="c05-heading" class="chart-card">
-      <h3 class="card-heading" id="c05-heading">
-       The technology divide
-      </h3>
-      <p class="interpretation">
-       Regional adults use FM more (+8 percentage points), while metro adults use DAB+ more (+10 points), according to ACMA 2025 weekly-use measures.
-      </p>
-      <p class="chart-context">
-       Regional minus metro, 2025 weekly use among adults 18+ (ACMA)
-      </p>
-      <div aria-label="Data visualisation for The technology divide" class="chart-wrap" data-spec="js/chart05_metro_regional_diverging.vg.json" id="c05" role="img">
-       <div class="load-status">
-        Loading chart&hellip;
-       </div>
+    </section>
+
+
+    <!-- ===== Chapter 2 ===== -->
+    <section class="chapter" id="who">
+      <div class="chapter-heading">
+        <div class="chapter-no">02</div>
+        <div>
+          <h2>Who listens: age and location matter</h2>
+          <p>Older listeners and people outside the capital cities rely on traditional radio more. Young people and city residents lead the move to digital.</p>
+        </div>
       </div>
-     </article>
-     <article aria-labelledby="c10-heading" class="chart-card full">
-      <h3 class="card-heading" id="c10-heading">
-       Where licensed digital radio transmitter sites appear
-      </h3>
-      <p class="interpretation">
-       Selected DAB+ transmitter coordinates in eleven service areas provide geographic context for the metro&ndash;regional listening gap. The map does not measure signal reception or household coverage.
-      </p>
-      <p class="chart-context">
-       Eleven metropolitan or regional areas in ACMA licensed transmitter data; NOT broadcast coverage boundaries
-      </p>
-      <div aria-label="Data visualisation for Where digital radio infrastructure appears" class="chart-wrap" data-spec="js/chart10_dab_locations_map.vg.json" id="c10" role="img">
-       <div class="load-status">
-        Loading chart&hellip;
-       </div>
+
+      <div class="chart-grid">
+        <article class="chart-card">
+          <h3 class="card-heading">Radio's youngest listeners are drifting away first</h3>
+          <p class="interpretation">
+            8 in 10 Australians aged 55+ listen to radio each week, in cities and regions alike.
+            Among 10&ndash;24 year olds the gap is 10 points: 70% nationally but only 60% in regional areas.
+          </p>
+          <p class="try"><b>Try:</b> hover the grey line between the dots for the exact gap.</p>
+          <div id="c04" class="chart-wrap"></div>
+          <div class="mini-legend"><span class="dot grey"></span>Australia overall <span class="dot teal"></span>Regional Australia</div>
+          <p class="source-note">Source: <a href="https://cra.au/hubfs/Infinite%20Dial%202026%20-%20REGIONAL%20Presentation_Final.pdf" target="_blank" rel="noopener">Infinite Dial Australia 2026 (Regional)</a>.</p>
+        </article>
+
+        <article class="chart-card">
+          <h3 class="card-heading">A third of Australians now listen to <em>and</em> watch podcasts</h3>
+          <p class="interpretation">
+            Each square is 100% of the population. The purple block shows people who both listen to and watch podcasts: 35% nationally, 28% in regional areas.
+          </p>
+          <p class="try"><b>Try:</b> hover a block to see its group.</p>
+          <div id="c03" class="chart-wrap"></div>
+          <p class="source-note">Source: <a href="https://cra.au/hubfs/Infinite%20Dial%202026-CRA.pdf" target="_blank" rel="noopener">Infinite Dial Australia 2026</a>, monthly podcast use, ages 10+.</p>
+        </article>
+
+        <article class="chart-card wide">
+          <h3 class="card-heading">Regional Australians use FM more; city residents use DAB+ more</h3>
+          <p class="interpretation">
+            58% of regional adults used FM radio in the past week, compared with 50% in the capital cities.
+            For DAB+ digital radio it is the other way round: 14% in the cities and only 4% in regional areas.
+            Chapter 3 shows why: DAB+ transmitters are mostly in the capital cities.
+          </p>
+          <p class="try"><b>Try:</b> hover a dot for the exact percentage.</p>
+          <div id="c05" class="chart-wrap narrow"></div>
+          <p class="source-note">Source: <a href="https://www.acma.gov.au/publications/2026-03/report/communications-and-media-australia-how-we-watch-and-listen-content" target="_blank" rel="noopener">ACMA, How we watch and listen to content (2026)</a>, adults 18+, survey of June 2025.</p>
+        </article>
       </div>
-      <p class="map-reading-note">
-       The points are representative coordinates for named licensed areas. Their licence-entry totals do not measure signal reception or service population.
-      </p>
-     </article>
-    </div>
-   </section>
-   <section class="chapter" id="adaptation">
-    <div class="chapter-heading">
-     <div class="chapter-no">
-      03
-     </div>
-     <div>
-      <span class="eyebrow">
-       CHAPTER 03
-      </span>
-      <h2>
-       New ways to connect and listen
-      </h2>
-      <p>
-       In-car technology and audio subscriptions are changing access to audio. Local radio station shares show that competition still varies by market.
-      </p>
-     </div>
-    </div>
-    <div class="chart-grid">
-     <article aria-labelledby="c06-heading" class="chart-card">
-      <h3 class="card-heading" id="c06-heading">
-       Digital car connectivity grows unevenly
-      </h3>
-      <p class="interpretation">
-       CarPlay / Android Auto ownership grew strongly after 2019. But the regional figure fell from 47% in 2025 to 40% in 2026, while the nationwide figure stayed at 52%. Each step shows the year-to-year change.
-      </p>
-      <p class="chart-context">
-       Apple CarPlay / Android Auto ownership among adult car travellers, 2019&ndash;2026
-      </p>
-      <div aria-label="Two waterfall charts showing yearly changes in car connectivity ownership nationwide and in regional Australia" class="chart-wrap" data-spec="js/chart06_in_car_waterfall.vg.json" id="c06" role="img">
-       <div class="load-status">
-        Loading chart&hellip;
-       </div>
+    </section>
+
+
+    <!-- ===== Chapter 3 ===== -->
+    <section class="chapter" id="tech">
+      <div class="chapter-heading">
+        <div class="chapter-no">03</div>
+        <div>
+          <h2>Technology: new ways in, and the towers behind radio</h2>
+          <p>Smartphones in cars and app subscriptions bring streaming into places radio used to own. Meanwhile, where you live decides which radio signals you can receive.</p>
+        </div>
       </div>
-     </article>
-     <article aria-labelledby="c07-heading" class="chart-card">
-      <h3 class="card-heading" id="c07-heading">
-       Digital access is not one-size-fits-all
-      </h3>
-      <p class="interpretation">
-       Each grid represents 100 weekly Spotify listeners, read left-to-right from the top row. Paid subscriptions accounted for 59% nationwide versus 56% regionally; shared accounts were more common regionally.
-      </p>
-      <p class="chart-context">
-       Read each grid from top-left to bottom-right; 100 squares = 100 weekly Spotify users, 2026
-      </p>
-      <div aria-label="Side-by-side waffle grids of Spotify account types in Australia and regional Australia" class="chart-wrap" data-spec="js/chart07_spotify_account_mix.vg.json" id="c07" role="img">
-       <div class="load-status">
-        Loading chart&hellip;
-       </div>
+
+      <div class="chart-grid">
+        <article class="chart-card">
+          <h3 class="card-heading">Phones are taking over the car dashboard</h3>
+          <p class="interpretation">
+            Apple CarPlay or Android Auto lets drivers stream from their phone through the car screen. Ownership rose from 10% in 2019 to 52% in 2026.
+            In regional Australia it dropped from 47% to 40% in the last year. Each bar shows the change from the year before.
+          </p>
+          <p class="try"><b>Try:</b> hover a bar for the yearly change.</p>
+          <div id="c06" class="chart-wrap"></div>
+          <div class="mini-legend"><span class="dot slate"></span>Starting level <span class="dot teal"></span>Increase <span class="dot coral"></span>Decrease</div>
+          <p class="source-note">Source: <a href="https://cra.au/hubfs/Infinite%20Dial%202026-CRA.pdf" target="_blank" rel="noopener">Infinite Dial Australia 2026</a>, adults 18+ who travelled in a car in the past month.</p>
+        </article>
+
+        <article class="chart-card">
+          <h3 class="card-heading">More than half of Spotify listeners pay for it</h3>
+          <p class="interpretation">
+            Each grid is 100 weekly Spotify listeners. 59 in 100 pay nationally, 56 in regional areas.
+            Regional listeners are more likely to use someone else's account.
+          </p>
+          <p class="try"><b>Try:</b> hover any square to see its group's size.</p>
+          <div id="c07" class="chart-wrap"></div>
+          <p class="source-note">Source: <a href="https://cra.au/hubfs/Infinite%20Dial%202026-CRA.pdf" target="_blank" rel="noopener">Infinite Dial Australia 2026</a> and Regional edition.</p>
+        </article>
+
+        <article class="chart-card full">
+          <h3 class="card-heading">Digital radio is built for the big cities</h3>
+          <p class="interpretation">
+            There are only 29 DAB+ transmitter sites in Australia. Every capital has one big tower (20&ndash;50 kW), and Sydney and Melbourne add
+            small &ldquo;infill&rdquo; sites to fill gaps. Outside the 11 regions shown here there is no DAB+ signal at all, which is why only 4% of regional adults use it.
+          </p>
+          <p class="try"><b>Try:</b> hover a region in the bar chart to find its sites on the map &middot; hover a circle for the tower's address and power.</p>
+          <div id="c10" class="chart-wrap"></div>
+          <p class="source-note">Circle size shows transmitter power in kilowatts (kW): more power means a signal that travels further. Source: <a href="https://www.acma.gov.au/list-transmitters-licence-broadcast" target="_blank" rel="noopener">ACMA list of licensed broadcast transmitters</a>, July 2026.</p>
+        </article>
+
+        <article class="chart-card full">
+          <h3 class="card-heading">Big, empty states need many small transmitters</h3>
+          <p class="interpretation">
+            The Northern Territory has 32.7 radio transmitter sites for every 100,000 people, compared with only 2.6 in Victoria.
+            In Western Australia, 65% of FM transmitters are relays that repeat a station from elsewhere for distant towns.
+            The ACT has the highest share of DAB+ sites (14%).
+          </p>
+          <p class="try"><b>Try:</b> use the menu below the map to switch between the three measures &middot; hover a state for all its numbers.</p>
+          <div id="c11" class="chart-wrap"></div>
+          <p class="source-note">Sources: <a href="https://www.acma.gov.au/list-transmitters-licence-broadcast" target="_blank" rel="noopener">ACMA transmitter list</a> (July 2026) joined with <a href="https://www.abs.gov.au/statistics/people/population/national-state-and-territory-population/mar-2026" target="_blank" rel="noopener">ABS population, March 2026</a>.</p>
+        </article>
       </div>
-     </article>
-    </div>
-   </section>
-   <section class="chapter" id="geography">
-    <div class="chapter-heading">
-     <div class="chapter-no">
-      04
-     </div>
-     <div>
-      <span class="eyebrow">
-       CHAPTER 04
-      </span>
-      <h2>
-       Local markets and infrastructure
-      </h2>
-      <p>
-       Local leaders differ across cities, station rankings evolve and FM retransmission licence structures vary by state. These are different measures&mdash;not population coverage.
-      </p>
-     </div>
-    </div>
-    <div class="market-guide" id="market-explore">
-     <div class="market-guide-copy">
-      <strong>
-       Explore local radio markets
-      </strong>
-      <p>
-       Choose a city to highlight its stations, follow its rankings, and compare its leading share on the map. You can also click a city or station mark to change the selection.
-      </p>
-     </div>
-     <div class="market-switch" title="Highlights the same metro market in the station distribution, ranking and map">
-      <label for="global-market">
-       Metro market
-      </label>
-      <select aria-label="Highlight the same metro market across three charts" id="global-market">
-       <option selected="selected" value="Melbourne">
-        Melbourne
-       </option>
-       <option value="Sydney">
-        Sydney
-       </option>
-       <option value="Brisbane">
-        Brisbane
-       </option>
-       <option value="Adelaide">
-        Adelaide
-       </option>
-       <option value="Perth">
-        Perth
-       </option>
-      </select>
-     </div>
-    </div>
-    <div class="chart-grid">
-     <article aria-labelledby="c08-heading" class="chart-card wide">
-      <h3 class="card-heading" id="c08-heading">
-       Local markets are not identical
-      </h3>
-      <p class="interpretation">
-       Select a metro market in the Metro market selector in this section to highlight its stations here, inspect its ranking history, and locate its leader on the map. The other stations stay visible for comparison.
-      </p>
-      <p class="chart-context">
-       All station shares remain visible; choose a market to highlight its stations
-      </p>
-      <div aria-label="Data visualisation for Local markets are not identical" class="chart-wrap" data-spec="js/chart08_market_station_distribution.vg.json" id="c08" role="img">
-       <div class="load-status">
-        Loading chart&hellip;
-       </div>
+    </section>
+
+
+    <!-- ===== Chapter 4 (linked charts) ===== -->
+    <section class="chapter" id="local">
+      <div class="chapter-heading">
+        <div class="chapter-no">04</div>
+        <div>
+          <h2>Local stations: what do city audiences choose?</h2>
+          <p>
+            Ratings surveys (GfK Surveys 3, 4 and 5 of 2026) show which stations people in the five largest cities listen to.
+            Music stations take about half of all listening, but talk and news are far stronger in some cities than others.
+          </p>
+        </div>
       </div>
-     </article>
-     <article aria-labelledby="c12-heading" class="chart-card full">
-      <h3 class="card-heading" id="c12-heading">
-       How strong is each local market leader?
-      </h3>
-      <p class="interpretation">
-       Perth has the highest leading-station share (17.6%) and Brisbane the lowest (12.0%). Circle sizes are rescaled over 12–18% so small differences are easier to see; exact percentages appear beside each city.
-      </p>
-      <p class="chart-context">
-       GfK Survey 5 (2026) · Five metropolitan markets · Scaled bubbles highlight differences within 12–18%
-      </p>
-      <div aria-label="Data visualisation for How strong is each local leader?" class="chart-wrap" data-spec="js/chart12_market_leaders_symbol_map.vg.json" id="c12" role="img">
-       <div class="load-status">
-        Loading chart&hellip;
-       </div>
+
+      <div class="city-picker" id="city-picker">
+        <span class="picker-label">&#128279; Pick a city to update all four charts below:</span>
+        <div class="city-buttons">
+          <button class="city-button" data-market="Sydney">Sydney</button>
+          <button class="city-button active" data-market="Melbourne">Melbourne</button>
+          <button class="city-button" data-market="Brisbane">Brisbane</button>
+          <button class="city-button" data-market="Adelaide">Adelaide</button>
+          <button class="city-button" data-market="Perth">Perth</button>
+        </div>
       </div>
-      <p class="map-reading-note">
-       Circle areas are deliberately rescaled across the observed range (12–18%), not proportional to market share from zero. Use the printed percentages for exact comparisons; hover to see each leading station.
-      </p>
-     </article>
-     <article aria-labelledby="c09-heading" class="chart-card wide">
-      <h3 class="card-heading" id="c09-heading">
-       Stability versus disruption
-      </h3>
-      <p class="interpretation">
-       The selected metro market (Metro market selector in this section) determines the ranking history shown here. The selection always contains five leading stations, so this chart cannot become empty.
-      </p>
-      <p class="chart-context">
-       Selected metro market &middot; Surveys 3&ndash;5 2026 &middot; the top five stations in Survey 5
-      </p>
-      <div aria-label="Data visualisation for Stability versus disruption" class="chart-wrap" data-spec="js/chart09_station_rank_bump.vg.json" id="c09" role="img">
-       <div class="load-status">
-        Loading chart&hellip;
-       </div>
+
+      <div class="chart-grid linked-grid">
+        <article class="chart-card linked wide">
+          <p class="linked-badge">&#128279; Linked &middot; <span class="market-name">Melbourne</span> highlighted</p>
+          <h3 class="card-heading">Music rules everywhere, but Melbourne talks the most</h3>
+          <p class="interpretation">
+            Commercial music stations take 50&ndash;55% of listening in every city. Commercial talk and news ranges from 14% in Melbourne to just 4% in Brisbane.
+            Since Survey 3, music has lost ground in Sydney (&minus;2.8 points) and Brisbane (&minus;4.1).
+          </p>
+          <p class="try"><b>Try:</b> click a city's bar to select it &middot; hover a segment for its change since Survey 3.</p>
+          <div id="c08" class="chart-wrap narrow"></div>
+        </article>
+
+        <article class="chart-card linked">
+          <p class="linked-badge">&#128279; Linked &middot; <span class="market-name">Melbourne</span> outlined</p>
+          <h3 class="card-heading">How far ahead is each city's No. 1 station?</h3>
+          <p class="interpretation">
+            Circle size shows how many points the top station leads the second by. Perth's NOVA leads by 5.3 points; Brisbane's race is the closest (1.1).
+            Melbourne is the only city led by a talk station (3AW).
+          </p>
+          <p class="try"><b>Try:</b> click a circle to select that city &middot; hover for both stations' shares.</p>
+          <div id="c12" class="chart-wrap"></div>
+        </article>
+
+        <article class="chart-card linked">
+          <p class="linked-badge">&#128279; Linked &middot; showing <span class="market-name">Melbourne</span></p>
+          <h3 class="card-heading">Every rated station in <span class="market-name">Melbourne</span></h3>
+          <p class="interpretation">
+            Bars show each station's share in Survey 5; the dark tick marks Survey 4. Arrows show the change in points.
+            Bar colours match the program types in the first chart of this chapter.
+          </p>
+          <p class="try"><b>Try:</b> hover a bar to see all three surveys.</p>
+          <div id="c13" class="chart-wrap"></div>
+        </article>
+
+        <article class="chart-card linked wide">
+          <p class="linked-badge">&#128279; Linked &middot; showing <span class="market-name">Melbourne</span></p>
+          <h3 class="card-heading">Who climbed and who slipped in the top five</h3>
+          <p class="interpretation">
+            Each line follows one of the five most-listened stations in Survey 5 across three surveys. Numbers on the left are shares in Survey 3; labels on the right are Survey 5.
+          </p>
+          <p class="try"><b>Try:</b> hover a point for its rank and share.</p>
+          <div id="c09" class="chart-wrap"></div>
+        </article>
       </div>
-     </article>
-     <article aria-labelledby="c11-heading" class="chart-card full">
-      <h3 class="card-heading" id="c11-heading">
-       Why FM infrastructure differs
-      </h3>
-      <p class="interpretation">
-       The proportion of FM licence records marked as retransmission ranges from 64.8% in WA to 3.6% in Victoria. This is a licensing structure measure, not the share of listeners.
+      <p class="source-note chapter-source">
+        Source for all four charts: <a href="https://cra.au/metro-ratings" target="_blank" rel="noopener">Commercial Radio &amp; Audio / GfK metro radio ratings</a>, 2026 Surveys 3&ndash;5, people 10+, Monday&ndash;Sunday 5:30am&ndash;midnight.
+        Program types were assigned by the author from each station's on-air format.
       </p>
-      <p class="chart-context">
-       Share of deduplicated issued FM transmitter records classified as retransmission, ACMA July 2026
-      </p>
-      <div aria-label="Data visualisation for Why FM infrastructure differs" class="chart-wrap" data-spec="js/chart11_fm_retransmission_choropleth.vg.json" id="c11" role="img">
-       <div class="load-status">
-        Loading chart&hellip;
-       </div>
-      </div>
-      <p class="map-reading-note">
-       A retransmission is a transmitter that rebroadcasts an existing FM service. Share refers to issued FM licence records, not people receiving FM.
-      </p>
-     </article>
-    </div>
-   </section>
+    </section>
   </main>
-  <section class="end" id="references">
+
+
+  <!-- ===== Sources ===== -->
+  <section class="end" id="sources">
     <div class="shell source-section">
-      <span class="eyebrow">DATA &amp; ATTRIBUTION</span>
-      <h2>References (APA 7th edition)</h2>
+      <h2>Data sources</h2>
       <ol class="reference-list">
-      <li>Australian Communications and Media Authority. (2026a, March 5). <em>Communications and media in Australia: How we watch and listen to content</em> <a href="https://www.acma.gov.au/publications/2026-03/report/communications-and-media-australia-how-we-watch-and-listen-content" target="_blank" rel="noopener noreferrer">https://www.acma.gov.au/publications/2026-03/report/communications-and-media-australia-how-we-watch-and-listen-content</a></li>
-      <li>Australian Communications and Media Authority. (2026b, July 13). <em>List of transmitters with a licence to broadcast</em> [Data set]. <a href="https://www.acma.gov.au/list-transmitters-licence-broadcast" target="_blank" rel="noopener noreferrer">https://www.acma.gov.au/list-transmitters-licence-broadcast</a></li>
-      <li>CartoDeco. (n.d.). <em>Australia-json-data</em> [TopoJSON data set]. GitHub. <a href="https://github.com/cartdeco/Australia-json-data" target="_blank" rel="noopener noreferrer">https://github.com/cartdeco/Australia-json-data</a></li>
-      <li>Commercial Radio &amp; Audio. (2026). <em>Metro ratings: 2026 GfK Survey 5</em> [Survey results]. <a href="https://cra.au/metro-ratings" target="_blank" rel="noopener noreferrer">https://cra.au/metro-ratings</a></li>
-      <li>Edison Research. (2026a). <em>The Infinite Dial Australia 2026</em> [Report]. Commercial Radio &amp; Audio. <a href="https://cra.au/hubfs/Infinite%20Dial%202026-CRA.pdf" target="_blank" rel="noopener noreferrer">https://cra.au/hubfs/Infinite%20Dial%202026-CRA.pdf</a></li>
-      <li>Edison Research. (2026b). <em>The Infinite Dial Australia 2026: Regional</em> [Report]. Commercial Radio &amp; Audio. <a href="https://cra.au/hubfs/Infinite%20Dial%202026%20-%20REGIONAL%20Presentation_Final.pdf" target="_blank" rel="noopener noreferrer">https://cra.au/hubfs/Infinite%20Dial%202026%20-%20REGIONAL%20Presentation_Final.pdf</a></li>
-      <li>Li, Z. (2026). <em>Australian radio in the digital age: Processed data and Vega-Lite specifications</em> [Data set and source code]. GitHub. <a href="https://github.com/Zhoubin999/FIT3179_DV2-critique" target="_blank" rel="noopener noreferrer">https://github.com/Zhoubin999/FIT3179_DV2-critique</a></li>
+        <li>Australian Bureau of Statistics. (2026). <em>National, state and territory population, March 2026</em> [Data set]. <a href="https://www.abs.gov.au/statistics/people/population/national-state-and-territory-population/mar-2026" target="_blank" rel="noopener">abs.gov.au</a></li>
+        <li>Australian Communications and Media Authority. (2026a). <em>Communications and media in Australia: How we watch and listen to content</em>. <a href="https://www.acma.gov.au/publications/2026-03/report/communications-and-media-australia-how-we-watch-and-listen-content" target="_blank" rel="noopener">acma.gov.au</a></li>
+        <li>Australian Communications and Media Authority. (2026b). <em>List of transmitters with a licence to broadcast</em> [Data set, extracted 13 July 2026]. <a href="https://www.acma.gov.au/list-transmitters-licence-broadcast" target="_blank" rel="noopener">acma.gov.au</a></li>
+        <li>CartoDeco. (n.d.). <em>Australia-json-data</em> [TopoJSON map data]. <a href="https://github.com/cartdeco/Australia-json-data" target="_blank" rel="noopener">github.com/cartdeco/Australia-json-data</a></li>
+        <li>Commercial Radio &amp; Audio. (2026). <em>GfK metro radio ratings, Surveys 3&ndash;5 2026</em>. <a href="https://cra.au/metro-ratings" target="_blank" rel="noopener">cra.au/metro-ratings</a></li>
+        <li>Edison Research. (2026a). <em>The Infinite Dial Australia 2026</em>. Commercial Radio &amp; Audio. <a href="https://cra.au/hubfs/Infinite%20Dial%202026-CRA.pdf" target="_blank" rel="noopener">cra.au (PDF)</a></li>
+        <li>Edison Research. (2026b). <em>The Infinite Dial Australia 2026: Regional</em>. Commercial Radio &amp; Audio. <a href="https://cra.au/hubfs/Infinite%20Dial%202026%20-%20REGIONAL%20Presentation_Final.pdf" target="_blank" rel="noopener">cra.au (PDF)</a></li>
       </ol>
       <p class="source-list">
-        <strong>Interpretation notes.</strong> City coordinates represent market locations, not transmitter coverage.
-        The DAB+ locations are licence-based examples, not reception boundaries.
-        FM retransmission percentages refer to issued licence records, not audience reach.
+        <strong>How the data was combined.</strong> The survey tables were merged into one long table
+        (<a href="data/australian_radio_combined_long.csv">australian_radio_combined_long.csv</a>).
+        Transmitter counts were joined to state populations
+        (<a href="data/state_radio_infrastructure_2026.csv">state_radio_infrastructure_2026.csv</a>), and three GfK surveys were joined with station program types
+        (<a href="data/metro_station_share_2026.csv">metro_station_share_2026.csv</a>). The script is in
+        <a href="data/build_merged_data.py">data/build_merged_data.py</a>.
+        Surveys cover different ages (ACMA: adults 18+; Infinite Dial and GfK: people 10+), so their numbers are shown in separate charts rather than mixed together.
       </p>
-      <p class="source-list">
-        AI tools assisted with data organisation and grammar refinement.
-      </p>
+      <p class="source-list">AI tools assisted with data organisation and grammar refinement.</p>
     </div>
   </section>
-  <footer class="footer">
-   <div class="shell">
-    <span>
-     FIT3179 &middot; Australian Radio in the Digital Age &middot; 12 October 2026
-    </span>
-    <span>
-     Author: Zhoubin Li
-    </span>
-   </div>
-  </footer>
-  <script src="https://cdn.jsdelivr.net/npm/vega@5">
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5">
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6">
-  </script>
-  <script src="js/main.js">
-  </script>
- </body>
-</html>
 
+  <footer class="footer">
+    <div class="shell">
+      <span>Australian Radio in the Digital Age &middot; FIT3179 Data Visualisation 2</span>
+      <span>Created by Zhoubin Li &middot; 18 October 2026</span>
+    </div>
+  </footer>
+
+  <script type="text/javascript" src="js/main.js"></script>
+</body>
+
+</html>
